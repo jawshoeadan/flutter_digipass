@@ -70,7 +70,10 @@ class _MyHomePageState extends State<MyHomePage> {
             child: CustomScrollView(
               slivers: [
                 CupertinoSliverNavigationBar(
-                  backgroundColor: Color(0xcc0a0a0a),
+                  backgroundColor: MediaQuery.of(context).platformBrightness ==
+                          Brightness.light
+                      ? Colors.grey[100]
+                      : Color(0xcc0a0a0a),
                   largeTitle: Text(
                     'DigiPass',
                     style: TextStyle(
