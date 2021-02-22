@@ -73,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   backgroundColor: MediaQuery.of(context).platformBrightness ==
                           Brightness.light
                       ? Colors.grey[100]
-                      : Color(0xcc0a0a0a),
+                      : Color(0xcc171717),
                   largeTitle: Text(
                     'DigiPass',
                     style: TextStyle(
