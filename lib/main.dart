@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:async/async.dart';
 
 void main() {
   runApp(MyApp());
@@ -38,17 +41,27 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  String scanned = "";
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  @override
+  initState() {
+    super.initState();
+  }
+
+  Future barcodeScanning() async {
+    try {
+      String barcode = await FlutterBarcodeScanner.scanBarcode(
+          "ff6666", "Cancel", false, ScanMode.BARCODE);
+      setState(() {
+        this.scanned = barcode;
+        print(barcode);
+      });
+    } on PlatformException catch (e) {
+      print(e);
+      setState(() {
+        this.scanned = "error of some kind";
+      });
+    }
   }
 
   @override
@@ -90,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           height: 20,
                         ),
                         Text(
-                          'Hello, World!',
+                          '$scanned',
                           style: TextStyle(
                               fontFamily: 'SFUI-Medium',
                               fontWeight: FontWeight.normal,
@@ -117,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
               color: Colors.deepOrange,
               child: CupertinoButton(
                 onPressed: () {
-                  print('Hello');
+                  barcodeScanning();
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(3.0),
