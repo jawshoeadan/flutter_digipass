@@ -43,7 +43,7 @@ jobs:
           bundleIdentifier: com.EitanandJosh.DigiPass
           # E.g.: IOS_APP_DEVELOPMENT, IOS_APP_STORE etc.
           signType: IOS_APP_STORE
-      - name: Download Provisioning Profiles
+      - name: Download Distribution Profiles
   # You may pin to the exact commit or the version.
   # uses: Apple-Actions/download-provisioning-profiles@3167792207a5b26099bc0ca22b5010a323dd2a0b
         uses: Apple-Actions/download-provisioning-profiles@v1
@@ -59,6 +59,21 @@ jobs:
           # The PKCS8 format Private Key for AppStore Connect API
           api-private-key: ${{ secrets.APC_PRIVATE_KEY }}
           
+      - name: Download Development Profiles
+  # You may pin to the exact commit or the version.
+  # uses: Apple-Actions/download-provisioning-profiles@3167792207a5b26099bc0ca22b5010a323dd2a0b
+        uses: Apple-Actions/download-provisioning-profiles@v1
+        with:
+          # The bundle identifier of the application
+          bundle-id: com.EitanandJosh.DigiPass
+          # The type of profile to download. One of IOS_APP_DEVELOPMENT, IOS_APP_STORE, IOS_APP_ADHOC, IOS_APP_INHOUSE, MAC_APP_DEVELOPMENT, MAC_APP_STORE, MAC_APP_DIRECT, TVOS_APP_DEVELOPMENT, TVOS_APP_STORE, TVOS_APP_ADHOC, TVOS_APP_INHOUSE
+          profile-type: IOS_APP_DEVELOPMENT
+          # The AppStore Connect API Key Issuer Identifier
+          issuer-id: 0690e069-9ae9-41cf-8298-5d31d85c9b8d
+          # The Key ID for AppStore Connect API
+          api-key-id: 3S697P578G
+          # The PKCS8 format Private Key for AppStore Connect API
+          api-private-key: ${{ secrets.APC_PRIVATE_KEY }}    
       - name: Build Flutter .ipa
         run: flutter build ipa --export-options-plist=exportOptions.plist
         
