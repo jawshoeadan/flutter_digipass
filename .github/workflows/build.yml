@@ -17,4 +17,28 @@ jobs:
       - name: Run flutter doctor
         run: flutter doctor
         
+      - name: Prepare signing
+  # You may pin to the exact commit or the version.
+  # uses: ngeri/prepare-signing@5bec954468cce224f0d7f589dbe42596dbaf48f0
+        uses: ngeri/prepare-signing@v1.0.2
+        with:
+          # App Store Connect private key with proper rights
+          appStoreConnectPrivateKey: ${{ secrets.APC_PRIVATE_KEY }}
+          # Identifier of the private key
+          keyID: 3S697P578G
+          # Issuer identifier
+          issuerID: 0690e069-9ae9-41cf-8298-5d31d85c9b8d
+          # Id of the newly created temporary kechain
+          keychainName: signing.ios
+          # Password of the newly created temporary kechain
+          keychainPassword: signing.ios
+          # Base64 encoded .p12 signing cert with private key
+          base64P12File: ${{ secrets.P12_CERT }}
+          # Password of the .p12 file
+          p12Password: ${{ secrets.P12_PASSWORD }}
+          # Bundle identifier of the application
+          bundleIdentifier: com.EitanandJosh.DigiPass
+          # E.g.: IOS_APP_DEVELOPMENT, IOS_APP_STORE etc.
+          signType: IOS_APP_STORE
+
      
