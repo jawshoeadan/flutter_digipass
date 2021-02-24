@@ -1,0 +1,15 @@
+name: Flutter iOS Build
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Flutter
+        run: brew install --cask flutter
+
+      - name: Run flutter doctor
+        run: flutter doctor
