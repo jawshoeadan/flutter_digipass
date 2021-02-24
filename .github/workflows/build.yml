@@ -45,5 +45,5 @@ jobs:
           signType: IOS_APP_STORE
   
       - name: Build Flutter .ipa
-        run: flutter build ipa --export-options-plist=<exportOptions.plist>
+        run: flutter build ipa --export-options-plist=exportOptions.plist
      
