@@ -43,5 +43,7 @@ jobs:
           bundleIdentifier: com.EitanandJosh.DigiPass
           # E.g.: IOS_APP_DEVELOPMENT, IOS_APP_STORE etc.
           signType: IOS_APP_STORE
-
+  
+      - name: Build Flutter .ipa
+        run: flutter build ipa --export-options-plist=<exportOptions.plist>
      
