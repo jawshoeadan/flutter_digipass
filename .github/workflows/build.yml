@@ -10,6 +10,11 @@ jobs:
 
       - name: Install Flutter
         run: brew install --cask flutter
-
+        
+      - name: Change Flutter Branch
+        run: flutter channel dev
+        
       - name: Run flutter doctor
         run: flutter doctor
+        
+     
