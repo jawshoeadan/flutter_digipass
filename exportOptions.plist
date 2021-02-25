@@ -4,5 +4,14 @@
 <dict>
 	<key>method</key>
 	<string>app-store</string>
+	<key>provisioningProfiles</key>
+	<dict>
+		<key>com.EitanandJosh.DigiPass</key>
+		<string>71405741-9d67-48e9-a517-86a4de82ea52</string>
+	</dict>
+	<key>signingCertificate</key>
+	<string>iOS Distribution</string>
+	<key>destination</key>
+	<string>upload</string>
 </dict>
 </plist>
