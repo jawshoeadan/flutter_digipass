@@ -7,7 +7,6 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
-        with: ${{ secrets.GH_PAT }}
         
       - name: Setup Flutter
         run: |
