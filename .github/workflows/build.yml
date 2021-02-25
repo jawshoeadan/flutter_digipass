@@ -9,11 +9,10 @@ jobs:
       - uses: actions/checkout@v2
         
       - name: Setup Flutter
-        run: |
-         brew install --cask flutter
-         flutter channel dev
-         flutter doctor
-         flutter pub get
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'dev' # or: 'beta' or 'dev'
+      - run: flutter pub get
         
       - name: Bump build number
         run: |
@@ -77,8 +76,8 @@ jobs:
           # The PKCS8 format Private Key for AppStore Connect API
           api-private-key: ${{ secrets.APC_PRIVATE_KEY }}    
           
-      - name: Prep iOS Flutter tools
-        run: flutter build ios --release --no-codesign
+    #  - name: Prep iOS Flutter tools
+     #   run: flutter build ios --release --no-codesign
       
       - name: Archive Xcode Project
         run: xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -config Release -archivePath build/ios/xcarchive/Runner1.xcarchive archive COMPILER_INDEX_STORE_ENABLE=NO DEVELOPMENT_TEAM=A72ZC8AJ5X 'CODE_SIGN_IDENTITY=iPhone Distribution'
