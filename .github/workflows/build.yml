@@ -7,12 +7,12 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
-        
-      - name: Setup Flutter
       - uses: subosito/flutter-action@v1
         with:
           channel: 'dev' # or: 'beta' or 'dev'
-      - run: flutter pub get
+          
+      - name: Setup Flutter
+        run: flutter pub get
         
       - name: Bump build number
         run: |
