@@ -13,6 +13,7 @@ jobs:
           
       - name: Setup Flutter
         run: flutter pub get
+        run: cd ios && pod install
         
       - name: Bump build number
         run: |
