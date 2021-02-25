@@ -45,6 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   initState() {
+    scanned = "Scan a card to get started.";
     super.initState();
   }
 
@@ -53,8 +54,10 @@ class _MyHomePageState extends State<MyHomePage> {
       String barcode = await FlutterBarcodeScanner.scanBarcode(
           "ff6666", "Cancel", false, ScanMode.BARCODE);
       setState(() {
-        this.scanned = barcode;
-        print(barcode);
+        if (barcode != "-1") {
+          this.scanned = barcode;
+          print(barcode);
+        }
       });
     } on PlatformException catch (e) {
       print(e);
