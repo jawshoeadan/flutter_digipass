@@ -12,8 +12,9 @@ jobs:
           channel: 'dev' # or: 'beta' or 'dev'
           
       - name: Setup Flutter
-        run: flutter pub get
-        run: cd ios && pod install
+        run: |
+          flutter pub get
+          cd ios && pod install
         
       - name: Bump build number
         run: |
