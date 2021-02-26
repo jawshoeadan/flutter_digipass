@@ -50,23 +50,26 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future barcodeScanning() async {
-    try {
-      String barcode = await FlutterBarcodeScanner.scanBarcode(
-          "ff6666", "Cancel", false, ScanMode.BARCODE);
-      setState(() {
-        if (kDebugMode) {
-          this.scanned = '*16466*';
-        } else {
+    if (kReleaseMode) {
+      try {
+        String barcode = await FlutterBarcodeScanner.scanBarcode(
+            "ff6666", "Cancel", false, ScanMode.BARCODE);
+        setState(() {
           if (barcode != "-1") {
             this.scanned = '*$barcode*';
             print(barcode);
           }
-        }
-      });
-    } on PlatformException catch (e) {
-      print(e);
+        });
+      } on PlatformException catch (e) {
+        print(e);
+        setState(() {
+          this.scanned = "error of some kind";
+        });
+      }
+    } else {
+      String barcode = "16466";
       setState(() {
-        this.scanned = "error of some kind";
+        this.scanned = '*$barcode*';
       });
     }
   }
@@ -109,28 +112,31 @@ class _MyHomePageState extends State<MyHomePage> {
                         SizedBox(
                           height: 20,
                         ),
-                        kDebugMode
-                            ? Text(
-                                "When using debug mode, barcode data is simulated.",
-                                style: TextStyle(
-                                  fontFamily: 'SFUI-Medium',
-                                  color: MediaQuery.of(context)
-                                              .platformBrightness ==
-                                          Brightness.light
-                                      ? Colors.black
-                                      : Colors.white,
-                                ))
-                            : Text(
-                                'Scan a card to get started.',
-                                style: TextStyle(
-                                  fontFamily: 'SFUI-Medium',
-                                  color: MediaQuery.of(context)
-                                              .platformBrightness ==
-                                          Brightness.light
-                                      ? Colors.black
-                                      : Colors.white,
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: kDebugMode
+                              ? Text(
+                                  "When using debug mode, barcode data is simulated.",
+                                  style: TextStyle(
+                                    fontFamily: 'SFUI-Medium',
+                                    color: MediaQuery.of(context)
+                                                .platformBrightness ==
+                                            Brightness.light
+                                        ? Colors.black
+                                        : Colors.white,
+                                  ))
+                              : Text(
+                                  'Scan a card to get started.',
+                                  style: TextStyle(
+                                    fontFamily: 'SFUI-Medium',
+                                    color: MediaQuery.of(context)
+                                                .platformBrightness ==
+                                            Brightness.light
+                                        ? Colors.black
+                                        : Colors.white,
+                                  ),
                                 ),
-                              ),
+                        ),
                         SizedBox(
                           height: 50,
                         ),
