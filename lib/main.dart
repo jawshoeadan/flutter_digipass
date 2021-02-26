@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:async/async.dart';
+import 'package:flutter/foundation.dart';
 
 void main() {
   runApp(MyApp());
@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   initState() {
-    scanned = "Scan a card to get started.";
+    scanned = "";
     super.initState();
   }
 
@@ -54,9 +54,13 @@ class _MyHomePageState extends State<MyHomePage> {
       String barcode = await FlutterBarcodeScanner.scanBarcode(
           "ff6666", "Cancel", false, ScanMode.BARCODE);
       setState(() {
-        if (barcode != "-1") {
-          this.scanned = barcode;
-          print(barcode);
+        if (kDebugMode) {
+          this.scanned = '*16466*';
+        } else {
+          if (barcode != "-1") {
+            this.scanned = '*$barcode*';
+            print(barcode);
+          }
         }
       });
     } on PlatformException catch (e) {
@@ -105,16 +109,52 @@ class _MyHomePageState extends State<MyHomePage> {
                         SizedBox(
                           height: 20,
                         ),
-                        Text(
-                          '$scanned',
-                          style: TextStyle(
-                              fontFamily: 'SFUI-Medium',
-                              fontWeight: FontWeight.normal,
-                              color:
-                                  MediaQuery.of(context).platformBrightness ==
+                        kDebugMode
+                            ? Text(
+                                "When using debug mode, barcode data is simulated.",
+                                style: TextStyle(
+                                  fontFamily: 'SFUI-Medium',
+                                  color: MediaQuery.of(context)
+                                              .platformBrightness ==
                                           Brightness.light
                                       ? Colors.black
-                                      : Colors.white),
+                                      : Colors.white,
+                                ))
+                            : Text(
+                                'Scan a card to get started.',
+                                style: TextStyle(
+                                  fontFamily: 'SFUI-Medium',
+                                  color: MediaQuery.of(context)
+                                              .platformBrightness ==
+                                          Brightness.light
+                                      ? Colors.black
+                                      : Colors.white,
+                                ),
+                              ),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          child: Container(
+                            color: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 30.0,
+                                  right: 30.0,
+                                  top: 40.0,
+                                  bottom: 5.0),
+                              child: Text(
+                                '$scanned',
+                                style: TextStyle(
+                                  fontFamily: 'Barcode39',
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black,
+                                  fontSize: 80,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),

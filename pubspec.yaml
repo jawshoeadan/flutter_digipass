@@ -69,6 +69,9 @@ flutter:
     - family: SFUI-Semibold
       fonts:
        - asset: assets/SFText-Semibold.otf 
+    - family: Barcode39
+      fonts:
+       - asset: assets/LibreBarcode39-Regular.ttf
     - family: sficonsets
       fonts:
        - asset: packages/flutter_sfsymbols/fonts/sficonsets.ttf
