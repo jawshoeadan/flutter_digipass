@@ -140,23 +140,26 @@ class _MyHomePageState extends State<MyHomePage> {
                         SizedBox(
                           height: 50,
                         ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          child: Container(
-                            color: Colors.white,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 30.0,
-                                  right: 30.0,
-                                  top: 40.0,
-                                  bottom: 5.0),
-                              child: Text(
-                                '$scanned',
-                                style: TextStyle(
-                                  fontFamily: 'Barcode39',
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.black,
-                                  fontSize: 80,
+                        Visibility(
+                          visible: (scanned != ""),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            child: Container(
+                              color: Colors.white,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 30.0,
+                                    right: 30.0,
+                                    top: 40.0,
+                                    bottom: 5.0),
+                                child: Text(
+                                  '$scanned',
+                                  style: TextStyle(
+                                    fontFamily: 'Barcode39',
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.black,
+                                    fontSize: 80,
+                                  ),
                                 ),
                               ),
                             ),
