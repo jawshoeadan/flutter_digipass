@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(MyApp());
@@ -42,34 +43,47 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String scanned = "";
+  String _scanned = "";
 
   @override
   initState() {
-    scanned = "";
+    loadScan();
+
     super.initState();
   }
 
+  loadScan() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _scanned = (prefs.getString('scan') ?? "");
+    });
+  }
+
   Future barcodeScanning() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
     if (kReleaseMode) {
       try {
         String barcode = await FlutterBarcodeScanner.scanBarcode(
             "ff6666", "Cancel", false, ScanMode.BARCODE);
         setState(() {
           if (barcode != "-1") {
-            this.scanned = '*$barcode*';
+            _scanned = '*$barcode*';
+            prefs.setString('scan', '*$barcode*');
             print(barcode);
           }
         });
       } on PlatformException catch (e) {
         print(e);
         setState(() {
-          this.scanned = "error of some kind";
+          _scanned = "There was an error scanning your card.";
         });
       }
     } else {
       String barcode = "16466";
       setState(() {
-        this.scanned = '*$barcode*';
+        _scanned = '*$barcode*';
+        prefs.setString('scan', '*$barcode*');
       });
     }
   }
@@ -141,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           height: 50,
                         ),
                         Visibility(
-                          visible: (scanned != ""),
+                          visible: (_scanned != ""),
                           child: ClipRRect(
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                             child: Container(
@@ -153,7 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     top: 40.0,
                                     bottom: 5.0),
                                 child: Text(
-                                  '$scanned',
+                                  '$_scanned',
                                   style: TextStyle(
                                     fontFamily: 'Barcode39',
                                     fontWeight: FontWeight.normal,
