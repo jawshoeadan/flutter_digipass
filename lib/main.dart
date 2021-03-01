@@ -68,6 +68,9 @@ class _MyHomePageState extends State<MyHomePage> {
             "ff6666", "Cancel", false, ScanMode.BARCODE);
         setState(() {
           if (barcode != "-1") {
+            if (barcode.startsWith('00', 0)) {
+              barcode = barcode.substring(2);
+            }
             _scanned = '$barcode';
             prefs.setString('scan', '$barcode');
             print(barcode);
@@ -80,8 +83,11 @@ class _MyHomePageState extends State<MyHomePage> {
         });
       }
     } else {
-      String barcode = "16466";
+      String barcode = "0016466";
       setState(() {
+        if (barcode.startsWith('00', 0)) {
+          barcode = barcode.substring(2);
+        }
         _scanned = '$barcode';
         prefs.setString('scan', '$barcode');
       });
@@ -156,19 +162,20 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors
-                                      .black, //                   <--- border color
-                                  width: 2.0,
-                                ),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0))),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Visibility(
-                                visible: (_scanned != ""),
+                          child: Visibility(
+                            visible: (_scanned != ""),
+                            child: Container(
+                              constraints: BoxConstraints(maxWidth: 400),
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors
+                                        .black, //                   <--- border color
+                                    width: 2.0,
+                                  ),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10.0))),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
                                 child: Column(
                                   children: [
                                     ClipRRect(
@@ -179,43 +186,37 @@ class _MyHomePageState extends State<MyHomePage> {
                                         child: Column(
                                           children: [
                                             Row(children: [
-                                              SizedBox(
-                                                width: 25,
+                                              Spacer(
+                                                flex: 2,
                                               ),
                                               Text(
                                                 'Brentwood School',
                                                 style: TextStyle(
                                                   fontFamily: 'SFUI-Medium',
-                                                  fontSize: 30,
+                                                  fontSize: 20,
                                                 ),
                                               ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 8.0,
-                                                    left: 8.0,
-                                                    right: 8.0),
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(10)),
-                                                  child: Container(
-                                                    color: Color.fromRGBO(
-                                                        9, 89, 172, 1.0),
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Image.network(
-                                                        'https://upload.wikimedia.org/wikipedia/en/thumb/6/6c/Brentwood_School_%28Los_Angeles%29_logo.svg/1200px-Brentwood_School_%28Los_Angeles%29_logo.svg.png',
-                                                        width: 50,
-                                                      ),
+                                              Spacer(flex: 5),
+                                              ClipRRect(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                                child: Container(
+                                                  color: Color.fromRGBO(
+                                                      9, 89, 172, 1.0),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Image.network(
+                                                      'https://upload.wikimedia.org/wikipedia/en/thumb/6/6c/Brentwood_School_%28Los_Angeles%29_logo.svg/1200px-Brentwood_School_%28Los_Angeles%29_logo.svg.png',
+                                                      width: 50,
                                                     ),
                                                   ),
                                                 ),
                                               ),
                                             ]),
                                             SizedBox(
-                                              height: 30,
+                                              height: 10,
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(
