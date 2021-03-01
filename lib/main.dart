@@ -68,8 +68,8 @@ class _MyHomePageState extends State<MyHomePage> {
             "ff6666", "Cancel", false, ScanMode.BARCODE);
         setState(() {
           if (barcode != "-1") {
-            _scanned = '*$barcode*';
-            prefs.setString('scan', '*$barcode*');
+            _scanned = '$barcode';
+            prefs.setString('scan', '$barcode');
             print(barcode);
           }
         });
@@ -82,8 +82,8 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       String barcode = "16466";
       setState(() {
-        _scanned = '*$barcode*';
-        prefs.setString('scan', '*$barcode*');
+        _scanned = '$barcode';
+        prefs.setString('scan', '$barcode');
       });
     }
   }
@@ -112,11 +112,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       ? Colors.grey[100]
                       : Color(0xcc171717),
                   largeTitle: Text(
-                    'DigiPass',
+                    'My Eagle Card',
                     style: TextStyle(
                         fontFamily: 'SFUI-Semibold',
                         letterSpacing: -.75,
-                        color: Colors.deepOrange),
+                        color: Colors.blue),
                   ),
                 ),
                 SliverToBoxAdapter(
@@ -154,26 +154,117 @@ class _MyHomePageState extends State<MyHomePage> {
                         SizedBox(
                           height: 50,
                         ),
-                        Visibility(
-                          visible: (_scanned != ""),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            child: Container(
-                              color: Colors.white,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 30.0,
-                                    right: 30.0,
-                                    top: 40.0,
-                                    bottom: 5.0),
-                                child: Text(
-                                  '$_scanned',
-                                  style: TextStyle(
-                                    fontFamily: 'Barcode39',
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.black,
-                                    fontSize: 80,
-                                  ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors
+                                      .black, //                   <--- border color
+                                  width: 2.0,
+                                ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0))),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Visibility(
+                                visible: (_scanned != ""),
+                                child: Column(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                      child: Container(
+                                        color: Colors.white,
+                                        child: Column(
+                                          children: [
+                                            Row(children: [
+                                              SizedBox(
+                                                width: 25,
+                                              ),
+                                              Text(
+                                                'Brentwood School',
+                                                style: TextStyle(
+                                                  fontFamily: 'SFUI-Medium',
+                                                  fontSize: 30,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 8.0,
+                                                    left: 8.0,
+                                                    right: 8.0),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(10)),
+                                                  child: Container(
+                                                    color: Color.fromRGBO(
+                                                        9, 89, 172, 1.0),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Image.network(
+                                                        'https://upload.wikimedia.org/wikipedia/en/thumb/6/6c/Brentwood_School_%28Los_Angeles%29_logo.svg/1200px-Brentwood_School_%28Los_Angeles%29_logo.svg.png',
+                                                        width: 50,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ]),
+                                            SizedBox(
+                                              height: 30,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 5),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                                child: Container(
+                                                  color: Colors.white,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      left: 15.0,
+                                                      right: 15.0,
+                                                      // top: 15.0,
+                                                    ),
+                                                    child: Text(
+                                                      '*$_scanned*',
+                                                      style: TextStyle(
+                                                        fontFamily: 'Barcode39',
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        color: Colors.black,
+                                                        fontSize: 80,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+
+                                            Text(
+                                              'Student ID: $_scanned',
+                                              style: TextStyle(
+                                                fontFamily: 'SFUI-Medium',
+                                                fontWeight: FontWeight.normal,
+                                                color: Colors.black,
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                            //),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -193,7 +284,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: ClipPath(
             clipper: ShapeBorderClipper(shape: CircleBorder()),
             child: Container(
-              color: Colors.deepOrange,
+              color: Colors.blue.shade700,
               child: CupertinoButton(
                 onPressed: () {
                   barcodeScanning();
