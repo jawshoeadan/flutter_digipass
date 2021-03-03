@@ -172,6 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         .black, //                   <--- border color
                                     width: 2.0,
                                   ),
+                                  color: Colors.white,
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10.0))),
                               child: Padding(
@@ -207,8 +208,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                                     padding:
                                                         const EdgeInsets.all(
                                                             8.0),
-                                                    child: Image.network(
-                                                      'https://upload.wikimedia.org/wikipedia/en/thumb/6/6c/Brentwood_School_%28Los_Angeles%29_logo.svg/1200px-Brentwood_School_%28Los_Angeles%29_logo.svg.png',
+                                                    child: Image.asset(
+                                                      'assets/1200px-Brentwood_School_(Los_Angeles)_logo.svg.png',
                                                       width: 50,
                                                     ),
                                                   ),
@@ -269,6 +270,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                               ),
                             ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            child: Image.asset('assets/Schedule.png'),
                           ),
                         ),
                       ],
