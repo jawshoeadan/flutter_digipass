@@ -8,7 +8,12 @@ class ScheduleView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(),
+      navigationBar: CupertinoNavigationBar(
+        automaticallyImplyLeading: true,
+        transitionBetweenRoutes: true,
+        previousPageTitle: 'My Eagle Card',
+        //heroTag: 'bar',
+      ),
       child: Hero(
         tag: 'Schedule',
         child: PhotoView(

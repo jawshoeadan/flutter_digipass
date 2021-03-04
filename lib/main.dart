@@ -114,6 +114,8 @@ class _MyHomePageState extends State<MyHomePage> {
             child: CustomScrollView(
               slivers: [
                 CupertinoSliverNavigationBar(
+                  // heroTag: 'bar',
+                  transitionBetweenRoutes: true,
                   backgroundColor: MediaQuery.of(context).platformBrightness ==
                           Brightness.light
                       ? Colors.grey[100]
@@ -282,10 +284,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                   tag: 'Schedule',
                                   child: Image.asset('assets/Schedule.png')),
                               onTap: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (_) {
-                                  return ScheduleView();
-                                }));
+                                Navigator.push(context, CupertinoPageRoute(
+                                  builder: (_) {
+                                    return ScheduleView();
+                                  },
+                                ));
                               },
                             ),
                           ),
