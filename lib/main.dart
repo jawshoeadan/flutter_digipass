@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_digipass/photo_view.dart';
 import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter/foundation.dart';
@@ -217,7 +218,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               ),
                                             ]),
                                             SizedBox(
-                                              height: 10,
+                                              height: 20,
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(
@@ -276,7 +277,17 @@ class _MyHomePageState extends State<MyHomePage> {
                           padding: const EdgeInsets.all(10.0),
                           child: ClipRRect(
                             borderRadius: BorderRadius.all(Radius.circular(10)),
-                            child: Image.asset('assets/Schedule.png'),
+                            child: GestureDetector(
+                              child: Hero(
+                                  tag: 'Schedule',
+                                  child: Image.asset('assets/Schedule.png')),
+                              onTap: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (_) {
+                                  return ScheduleView();
+                                }));
+                              },
+                            ),
                           ),
                         ),
                       ],
