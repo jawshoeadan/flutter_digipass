@@ -211,8 +211,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                                     padding:
                                                         const EdgeInsets.all(
                                                             8.0),
-                                                    child: Image.asset(
-                                                      'assets/1200px-Brentwood_School_(Los_Angeles)_logo.svg.png',
+                                                    child: Image.network(
+                                                      'https://github.com/jawshoeadan/flutter_digipass/raw/master/assets/Schedule.png',
                                                       width: 50,
                                                     ),
                                                   ),
