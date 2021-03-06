@@ -212,7 +212,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                         const EdgeInsets.all(
                                                             8.0),
                                                     child: Image.network(
-                                                      'https://github.com/jawshoeadan/flutter_digipass/raw/master/assets/Schedule.png',
+                                                      'assets/1200px-Brentwood_School_(Los_Angeles)_logo.svg.png',
                                                       width: 50,
                                                     ),
                                                   ),
@@ -282,7 +282,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: GestureDetector(
                               child: Hero(
                                   tag: 'Schedule',
-                                  child: Image.asset('assets/Schedule.png')),
+                                  child: Image.network(
+                                      'https://github.com/jawshoeadan/flutter_digipass/raw/master/assets/Schedule.png')),
                               onTap: () {
                                 Navigator.push(context, CupertinoPageRoute(
                                   builder: (_) {
