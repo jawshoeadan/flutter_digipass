@@ -211,7 +211,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                     padding:
                                                         const EdgeInsets.all(
                                                             8.0),
-                                                    child: Image.network(
+                                                    child: Image.asset(
                                                       'assets/1200px-Brentwood_School_(Los_Angeles)_logo.svg.png',
                                                       width: 50,
                                                     ),
