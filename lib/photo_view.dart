@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:photo_view/photo_view.dart';
@@ -17,7 +18,9 @@ class ScheduleView extends StatelessWidget {
       child: Hero(
         tag: 'Schedule',
         child: PhotoView(
-          imageProvider: NetworkImage(
+          maxScale: 2,
+          minScale: .5,
+          imageProvider: CachedNetworkImageProvider(
               "https://github.com/jawshoeadan/flutter_digipass/raw/master/assets/Schedule.png"),
         ),
       ),

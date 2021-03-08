@@ -6,6 +6,7 @@ import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 void main() {
   runApp(MyApp());
@@ -282,8 +283,18 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: GestureDetector(
                               child: Hero(
                                   tag: 'Schedule',
-                                  child: Image.network(
-                                      'https://github.com/jawshoeadan/flutter_digipass/raw/master/assets/Schedule.png')),
+                                  child: CachedNetworkImage(
+                                    imageUrl:
+                                        "https://github.com/jawshoeadan/flutter_digipass/raw/master/assets/Schedule.png",
+                                    progressIndicatorBuilder: (context, url,
+                                            downloadProgress) =>
+                                        CircularProgressIndicator(
+                                            value: downloadProgress.progress),
+                                    errorWidget: (context, url, error) =>
+                                        Icon(Icons.error),
+                                  )),
+                              //   child: Image.network(
+                              //      'https://github.com/jawshoeadan/flutter_digipass/raw/master/assets/Schedule.png')),
                               onTap: () {
                                 Navigator.push(context, CupertinoPageRoute(
                                   builder: (_) {
