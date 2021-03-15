@@ -16,7 +16,7 @@ void main() {
     FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
     analytics = FirebaseAnalytics();
   } else {
-    FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+    FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
   }
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   runApp(MyApp());
