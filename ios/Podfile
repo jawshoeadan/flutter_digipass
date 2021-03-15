@@ -26,6 +26,7 @@ end
 require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelper'), flutter_root)
 
 flutter_ios_podfile_setup
+platform :ios, '11.0'
 
 target 'Runner' do
   use_frameworks!
@@ -39,3 +40,8 @@ post_install do |installer|
     flutter_additional_ios_build_settings(target)
   end
 end
+
+target 'ImageNotification' do
+  pod 'Firebase/Messaging'
+  use_frameworks!
+  end
