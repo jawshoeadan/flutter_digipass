@@ -12,9 +12,9 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 FirebaseAnalytics analytics;
 void main() {
-  analytics = FirebaseAnalytics();
-  if (kDebugMode) {
-    FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
+  if (kReleaseMode) {
+    FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+    analytics = FirebaseAnalytics();
   } else {
     FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   }
