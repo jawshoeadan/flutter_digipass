@@ -5,17 +5,45 @@ import 'package:flutter_digipass/photo_view.dart';
 import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter/foundation.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_performance/firebase_performance.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
+FirebaseAnalytics analytics;
+bool testingFirebase = true;
+final GoogleSignIn googleSignIn = GoogleSignIn();
+FirebaseAuth _auth = FirebaseAuth.instance;
 void main() {
   runApp(MyApp());
+}
+
+Future<void> initializeFlutterFire() async {
+  FirebaseApp app = await Firebase.initializeApp();
+  analytics = FirebaseAnalytics();
+  FirebasePerformance performance = FirebasePerformance.instance;
+  await FirebaseCrashlytics.instance
+      .setCrashlyticsCollectionEnabled(!kDebugMode);
+  Function originalOnError = FlutterError.onError;
+  FlutterError.onError = (FlutterErrorDetails errorDetails) async {
+    await FirebaseCrashlytics.instance.recordFlutterError(errorDetails);
+    // Forward to original handler.
+    originalOnError(errorDetails);
+  };
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    if (testingFirebase || kReleaseMode) {
+      initializeFlutterFire();
+    }
     SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp],
     );
@@ -64,10 +92,40 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  GoogleSignInAccount googleUser;
+  GoogleSignInAuthentication googleAuth;
+  Future<void> signInWithGoogle() async {
+    try {
+      googleUser = await googleSignIn.signIn();
+    } catch (error) {
+      print(error);
+    }
+    setState(() {
+      userName = googleUser.displayName;
+      photoURL = googleUser.photoUrl;
+      email = googleUser.email;
+    });
+    try {
+      googleAuth = await googleUser.authentication;
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  void signOutWithGoogle() async {
+    googleSignIn.signOut();
+    setState(() {
+      userName = "";
+      email = "";
+      photoURL = "";
+    });
+  }
+
   Future barcodeScanning() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     if (kReleaseMode) {
+      analytics.logEvent(name: 'push_scan_button');
       try {
         String barcode = await FlutterBarcodeScanner.scanBarcode(
             "ff6666", "Cancel", false, ScanMode.BARCODE);
@@ -77,7 +135,14 @@ class _MyHomePageState extends State<MyHomePage> {
               barcode = barcode.substring(2);
             }
             _scanned = '$barcode';
-            prefs.setString('scan', '$barcode');
+            if (testingFirebase) {
+              analytics.logEvent(
+                  name: 'barcode_changed_params',
+                  parameters: {'id': '$barcode'});
+            }
+
+            analytics.logEvent(name: 'barcode_changed');
+            prefs.setString('scan', barcode);
             print(barcode);
           }
         });
@@ -97,6 +162,89 @@ class _MyHomePageState extends State<MyHomePage> {
         prefs.setString('scan', '$barcode');
       });
     }
+  }
+
+  String userName = '';
+  String photoURL = '';
+  String email = '';
+  Widget _signInButton() {
+    return CupertinoButton(
+      onPressed: () {
+        signInWithGoogle();
+        setState(() {
+          userName = googleUser.displayName;
+          photoURL = googleUser.photoUrl;
+          email = googleUser.email;
+        });
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        child: Container(
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image(
+                    image: AssetImage("assets/google_logo.png"), height: 35.0),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Text(
+                    'Sign in with Google',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _signOutButton() {
+    return CupertinoButton(
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        child: Container(
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image(
+                    image: AssetImage("assets/google_logo.png"), height: 35.0),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Text(
+                    'Sign out with Google',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+      onPressed: () {
+        signOutWithGoogle();
+        setState(() {
+          userName = "";
+          email = "";
+          photoURL = "";
+        });
+      },
+    );
   }
 
   @override
@@ -308,6 +456,18 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                         ),
+                        _signInButton(),
+                        _signOutButton(),
+                        Text(userName ?? '',
+                            style: TextStyle(
+                              color: Colors.white,
+                            )),
+                        Text(email ?? '',
+                            style: TextStyle(
+                              color: Colors.white,
+                            )),
+                        CachedNetworkImage(imageUrl: photoURL),
+                        SizedBox(height: 100)
                       ],
                     ),
                   ),
