@@ -26,12 +26,24 @@ end
 require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelper'), flutter_root)
 
 flutter_ios_podfile_setup
-platform :ios, '11.0'
+use_frameworks!
+
+def google_utilites
+  pod 'GoogleUtilities/AppDelegateSwizzler'
+  pod 'GoogleUtilities/Environment'
+  pod 'GoogleUtilities/ISASwizzler'
+  pod 'GoogleUtilities/Logger'
+  pod 'GoogleUtilities/MethodSwizzler'
+  pod 'GoogleUtilities/NSData+zlib'
+  pod 'GoogleUtilities/Network'
+  pod 'GoogleUtilities/Reachability'
+  pod 'GoogleUtilities/UserDefaults'
+  pod 'GTMSessionFetcher'
+end
 
 target 'Runner' do
-  use_frameworks!
   use_modular_headers!
-
+  google_utilites
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 end
 
@@ -42,6 +54,6 @@ post_install do |installer|
 end
 
 target 'ImageNotification' do
+  google_utilites
   pod 'Firebase/Messaging'
-  use_frameworks!
   end

@@ -13,18 +13,20 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 FirebaseAnalytics analytics;
 bool testingFirebase = true;
 final GoogleSignIn googleSignIn = GoogleSignIn();
 FirebaseAuth _auth = FirebaseAuth.instance;
+FirebaseMessaging messaging = FirebaseMessaging.instance;
 void main() {
   runApp(MyApp());
 }
 
 Future<void> initializeFlutterFire() async {
   FirebaseApp app = await Firebase.initializeApp();
+  NotificationSettings settings = await messaging.requestPermission();
   analytics = FirebaseAnalytics();
   FirebasePerformance performance = FirebasePerformance.instance;
   await FirebaseCrashlytics.instance
