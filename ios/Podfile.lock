@@ -181,7 +181,6 @@ PODS:
     - FMDB (>= 2.7.5)
 
 DEPENDENCIES:
-  - Firebase/Messaging
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -191,16 +190,6 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_barcode_scanner (from `.symlinks/plugins/flutter_barcode_scanner/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
-  - GoogleUtilities/AppDelegateSwizzler
-  - GoogleUtilities/Environment
-  - GoogleUtilities/ISASwizzler
-  - GoogleUtilities/Logger
-  - GoogleUtilities/MethodSwizzler
-  - GoogleUtilities/Network
-  - "GoogleUtilities/NSData+zlib"
-  - GoogleUtilities/Reachability
-  - GoogleUtilities/UserDefaults
-  - GTMSessionFetcher
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
@@ -296,6 +285,6 @@ SPEC CHECKSUMS:
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
 
-PODFILE CHECKSUM: 3c800d8d92348a4b5718cfbab29df8c7c656c435
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 
 COCOAPODS: 1.10.1
