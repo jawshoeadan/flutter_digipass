@@ -496,7 +496,7 @@
 		};
 		249021D4217E4FDB00AE95B9 /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
+			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ARCHS = arm64;
@@ -526,7 +526,7 @@
 		};
 		7098DADC25FF59A000AEB215 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3839B46897A04DF2CF6AD0E3 /* Pods-ImageNotification.debug.xcconfig */;
+			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -561,7 +561,7 @@
 		};
 		7098DADD25FF59A000AEB215 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2CEB6A3F22CE42AD58D16740 /* Pods-ImageNotification.release.xcconfig */;
+			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -593,7 +593,7 @@
 		};
 		7098DADE25FF59A000AEB215 /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DCD2627CB7647F01284EDC90 /* Pods-ImageNotification.profile.xcconfig */;
+			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
