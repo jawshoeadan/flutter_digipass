@@ -92,6 +92,8 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _scanned = (prefs.getString('scan') ?? "");
     });
+
+    await analytics.logEvent(name: 'loadedCard');
   }
 
   GoogleSignInAccount googleUser;
@@ -109,6 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     try {
       googleAuth = await googleUser.authentication;
+      await analytics.logEvent(name: 'signed_in');
     } catch (error) {
       print(error);
     }
@@ -116,6 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void signOutWithGoogle() async {
     googleSignIn.signOut();
+    await analytics.logEvent(name: 'signed_out');
     setState(() {
       userName = "";
       email = "";
@@ -125,25 +129,23 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future barcodeScanning() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    await analytics.logEvent(name: 'push_scan_button');
     if (kReleaseMode) {
-      analytics.logEvent(name: 'push_scan_button');
       try {
         String barcode = await FlutterBarcodeScanner.scanBarcode(
             "ff6666", "Cancel", false, ScanMode.BARCODE);
+        await analytics.logAddPaymentInfo();
+        if (testingFirebase) {
+          await analytics.logEvent(
+              name: 'barcode_changed', parameters: {'id': '$barcode'});
+        }
         setState(() {
           if (barcode != "-1") {
             if (barcode.startsWith('00', 0)) {
               barcode = barcode.substring(2);
             }
             _scanned = '$barcode';
-            if (testingFirebase) {
-              analytics.logEvent(
-                  name: 'barcode_changed_params',
-                  parameters: {'id': '$barcode'});
-            }
 
-            analytics.logEvent(name: 'barcode_changed');
             prefs.setString('scan', barcode);
             print(barcode);
           }
