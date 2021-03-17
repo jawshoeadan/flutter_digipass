@@ -134,11 +134,6 @@ class _MyHomePageState extends State<MyHomePage> {
       try {
         String barcode = await FlutterBarcodeScanner.scanBarcode(
             "ff6666", "Cancel", false, ScanMode.BARCODE);
-        await analytics.logAddPaymentInfo();
-        if (testingFirebase) {
-          await analytics.logEvent(
-              name: 'barcode_changed', parameters: {'id': '$barcode'});
-        }
         setState(() {
           if (barcode != "-1") {
             if (barcode.startsWith('00', 0)) {
@@ -155,6 +150,10 @@ class _MyHomePageState extends State<MyHomePage> {
         setState(() {
           _scanned = "There was an error scanning your card.";
         });
+         if (testingFirebase) {
+          await analytics.logEvent(
+              name: 'barcode_changed', parameters: {'id': _scanned});
+        }
       }
     } else {
       String barcode = "0016466";
