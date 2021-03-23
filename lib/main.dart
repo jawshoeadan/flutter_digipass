@@ -16,7 +16,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 FirebaseAnalytics analytics;
-bool testingFirebase = true;
+bool usingFirebase = !kDebugMode;
 final GoogleSignIn googleSignIn = GoogleSignIn();
 FirebaseAuth _auth = FirebaseAuth.instance;
 FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    if (testingFirebase || kReleaseMode) {
+    if (usingFirebase) {
       initializeFlutterFire();
     }
     SystemChrome.setPreferredOrientations(
@@ -82,8 +82,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   initState() {
-    loadScan();
-
+    if (!kDebugMode) {
+      loadScan();
+    }
     super.initState();
   }
 
@@ -93,7 +94,9 @@ class _MyHomePageState extends State<MyHomePage> {
       _scanned = (prefs.getString('scan') ?? "");
     });
 
-    await analytics.logEvent(name: 'loadedCard');
+    if (usingFirebase) {
+      await analytics.logEvent(name: 'loadedCard');
+    }
   }
 
   GoogleSignInAccount googleUser;
@@ -129,7 +132,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future barcodeScanning() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await analytics.logEvent(name: 'push_scan_button');
+    if (usingFirebase) {
+      await analytics.logEvent(name: 'push_scan_button');
+    }
     if (kReleaseMode) {
       try {
         String barcode = await FlutterBarcodeScanner.scanBarcode(
@@ -150,9 +155,9 @@ class _MyHomePageState extends State<MyHomePage> {
         setState(() {
           _scanned = "There was an error scanning your card.";
         });
-         if (testingFirebase) {
-          await analytics.logEvent(
-              name: 'barcode_changed', parameters: {'id': _scanned});
+        if (usingFirebase) {
+          await analytics
+              .logEvent(name: 'barcode_changed', parameters: {'id': _scanned});
         }
       }
     } else {
@@ -437,16 +442,21 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: GestureDetector(
                               child: Hero(
                                   tag: 'Schedule',
-                                  child: CachedNetworkImage(
-                                    imageUrl:
-                                        "https://github.com/jawshoeadan/flutter_digipass/raw/master/assets/Schedule.png",
-                                    progressIndicatorBuilder: (context, url,
-                                            downloadProgress) =>
-                                        CircularProgressIndicator(
-                                            value: downloadProgress.progress),
-                                    errorWidget: (context, url, error) =>
-                                        Icon(Icons.error),
-                                  )),
+                                  child:
+                                      "https://github.com/jawshoeadan/flutter_digipass/raw/master/assets/Schedule.png"
+                                              .isNotEmpty
+                                          ? CachedNetworkImage(
+                                              imageUrl:
+                                                  "https://github.com/jawshoeadan/flutter_digipass/raw/master/assets/Schedule.png",
+                                              progressIndicatorBuilder: (context,
+                                                      url, downloadProgress) =>
+                                                  CupertinoActivityIndicator(),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      Icon(Icons.error),
+                                            )
+                                          : Text(
+                                              "Unable to connect to network")),
                               //   child: Image.network(
                               //      'https://github.com/jawshoeadan/flutter_digipass/raw/master/assets/Schedule.png')),
                               onTap: () {
@@ -469,7 +479,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             style: TextStyle(
                               color: Colors.white,
                             )),
-                        CachedNetworkImage(imageUrl: photoURL),
+                        if (photoURL != '')
+                          CachedNetworkImage(imageUrl: 'https://$photoURL'),
                         SizedBox(height: 100)
                       ],
                     ),

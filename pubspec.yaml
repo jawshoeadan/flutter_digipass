@@ -24,7 +24,7 @@ dependencies:
   flutter_sfsymbols: ^2.0.0
   flutter_barcode_scanner: ^1.0.2
   shared_preferences: ^2.0.4
-  cached_network_image: ^2.5.0
+  cached_network_image: ^2.5.1
   photo_view: ^0.11.1
   firebase_core: ^1.0.1
   firebase_analytics: ^7.1.1
