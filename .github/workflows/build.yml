@@ -20,6 +20,9 @@ jobs:
         run: |
           git pull
           perl -i -pe 's/^(version:\s+\d+\.\d+\.\d+\+)(\d+)$/$1.($2+1)/e' pubspec.yaml
+      - name: Build for web
+        run: |
+          flutter build web
           git add . 
           git commit -m "Bump build version"
           git push origin HEAD
