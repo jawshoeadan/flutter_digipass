@@ -18,8 +18,11 @@ class ScheduleView extends StatelessWidget {
       child: Hero(
         tag: 'Schedule',
         child: PhotoView(
-          maxScale: 1.25,
-          minScale: .25,
+          maxScale: PhotoViewComputedScale.contained * 4,
+          minScale: PhotoViewComputedScale.contained,
+          backgroundDecoration: BoxDecoration(
+            color: Colors.white,
+          ),
           imageProvider: NetworkImage(
             "https://github.com/jawshoeadan/flutter_digipass/raw/master/assets/Schedule.png",
           ),
