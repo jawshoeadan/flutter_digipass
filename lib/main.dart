@@ -16,7 +16,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 FirebaseAnalytics analytics;
-bool usingFirebase = !kDebugMode;
+bool usingFirebase = !kDebugMode && !kIsWeb;
 final GoogleSignIn googleSignIn = GoogleSignIn();
 FirebaseAuth _auth = FirebaseAuth.instance;
 FirebaseMessaging messaging = FirebaseMessaging.instance;

@@ -21,7 +21,10 @@ class ScheduleView extends StatelessWidget {
           maxScale: PhotoViewComputedScale.contained * 4,
           minScale: PhotoViewComputedScale.contained,
           backgroundDecoration: BoxDecoration(
-            color: Colors.white,
+            color: MediaQuery.of(context).platformBrightness ==
+                          Brightness.light
+                      ? Colors.white
+                      : Colors.black,
           ),
           imageProvider: NetworkImage(
             "https://github.com/jawshoeadan/flutter_digipass/raw/master/assets/Schedule.png",
