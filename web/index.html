@@ -30,6 +30,31 @@
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
+       <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-messaging.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyAX4Tu1VwkyLKQUl_OKvYddJXGlUeE57b4",
+    authDomain: "digipass-8ce3a.firebaseapp.com",
+    projectId: "digipass-8ce3a",
+    storageBucket: "digipass-8ce3a.appspot.com",
+    messagingSenderId: "38014690112",
+    appId: "1:38014690112:web:32673d5d6e1bad3523d0a5",
+    measurementId: "G-9846WM5DLB"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+
   <script>
     var serviceWorkerVersion = null;
     var scriptLoaded = false;
