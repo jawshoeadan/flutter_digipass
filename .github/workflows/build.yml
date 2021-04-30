@@ -15,7 +15,7 @@ jobs:
         run: |
           cd ios && rm -rf Pods && rm Podfile.lock
           flutter pub get
-          cd ios && flutter precache --ios && pod install
+          flutter precache --ios && pod install
         
       - name: Bump build number
         run: |
