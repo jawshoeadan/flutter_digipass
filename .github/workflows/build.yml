@@ -13,6 +13,7 @@ jobs:
           
       - name: Setup Flutter
         run: |
+          cd ios && rm -rf Pods && rm Podfile.lock
           flutter pub get
           cd ios && flutter precache --ios && pod install
         
@@ -102,7 +103,7 @@ jobs:
         
      # - name: Export Archive to .ipa
       #  run: xcodebuild -exportArchive -archivePath build/ios/xcarchive/Runner1.xcarchive -exportPath build/ios/ipa -exportOptionsPlist exportOptions.plist COMPILER_INDEX_STORE_ENABLE=NO
-       
+      
       - name: Export to ipa
         run: flutter build ipa --export-options-plist=exportOptions.plist
         
