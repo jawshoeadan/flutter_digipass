@@ -14,6 +14,7 @@ jobs:
           
       - name: Setup Flutter
         run: |
+          rm -f pubspec.lock
           cd ios && rm -f Podfile.lock
           flutter pub get
           flutter precache --ios && pod install
