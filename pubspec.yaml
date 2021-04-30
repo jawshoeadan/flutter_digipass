@@ -22,14 +22,14 @@ environment:
 
 dependencies:
   flutter_sfsymbols: ^2.0.0
-  flutter_barcode_scanner: ^1.0.2
+  flutter_barcode_scanner: ^2.0.0
   shared_preferences: ^2.0.4
-  cached_network_image: ^2.5.1
+  cached_network_image: ^3.0.0
   photo_view: ^0.11.1
   firebase_core: ^1.0.1
-  firebase_analytics: ^7.1.1
-  firebase_performance: ^0.6.0
-  firebase_crashlytics: ^1.0.0
+  firebase_analytics: ^8.0.2
+  firebase_performance: ^0.7.0+2
+  firebase_crashlytics: ^2.0.2
   firebase_auth: ^1.0.1
   google_sign_in: ^5.0.0
   firebase_messaging: ^9.0.0
