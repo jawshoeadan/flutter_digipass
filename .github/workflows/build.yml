@@ -121,9 +121,9 @@ jobs:
     # The type of app to upload (osx | ios | appletvos)
           app-type: ios
     # The AppStoreConnect API Key Issuer Identifier
-          issuer-id: 0690e069-9ae9-41cf-8298-5d31d85c9b8d
+          issuer-id: ${{ secrets.ISSUER_ID }}
     # The Key ID for AppStore Connect API
-          api-key-id: 3S697P578G
+          api-key-id: ${{ secrets.API_KEY_ID }}
     # The PKCS8 format Private Key for AppStore Connect API
           api-private-key: ${{ secrets.APC_PRIVATE_KEY }}
      
