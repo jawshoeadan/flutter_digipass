@@ -435,7 +435,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                         ),
-                        Padding(
+                        /* Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: ClipRRect(
                             borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -481,7 +481,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             )),
                         if (photoURL != '')
                           CachedNetworkImage(imageUrl: 'https://$photoURL'),
-                        SizedBox(height: 100)
+                        SizedBox(height: 100)*/
                       ],
                     ),
                   ),
