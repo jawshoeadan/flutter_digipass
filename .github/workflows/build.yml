@@ -100,11 +100,14 @@ jobs:
     #  - name: Prep iOS Flutter tools
      #   run: flutter build ios --release --no-codesign
       
-      - name: Archive Xcode Project
-        run: xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -config Release -archivePath build/ios/xcarchive/Runner1.xcarchive archive COMPILER_INDEX_STORE_ENABLE=NO DEVELOPMENT_TEAM=A72ZC8AJ5X 'CODE_SIGN_IDENTITY=iPhone Distribution'
+     # - name: Archive Xcode Project
+      #  run: xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -config Release -archivePath build/ios/xcarchive/Runner1.xcarchive archive COMPILER_INDEX_STORE_ENABLE=NO DEVELOPMENT_TEAM=A72ZC8AJ5X 'CODE_SIGN_IDENTITY=iPhone Distribution'
         
-      - name: Export Archive to .ipa
-        run: xcodebuild -exportArchive -archivePath build/ios/xcarchive/Runner1.xcarchive -exportPath build/ios/ipa -exportOptionsPlist exportOptions.plist COMPILER_INDEX_STORE_ENABLE=NO
+     # - name: Export Archive to .ipa
+      #  run: xcodebuild -exportArchive -archivePath build/ios/xcarchive/Runner1.xcarchive -exportPath build/ios/ipa -exportOptionsPlist exportOptions.plist COMPILER_INDEX_STORE_ENABLE=NO
+       
+      - name: Export to ipa
+        run: flutter build ipa --export-options-plist=exportOptions.plist
         
       - name: Upload app to TestFlight
   # You may pin to the exact commit or the version.
