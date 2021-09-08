@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_digipass/photo_view.dart';
+//import 'package:flutter_digipass/photo_view.dart';
 import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter/foundation.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+//import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+// import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_performance/firebase_performance.dart';
@@ -17,7 +17,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 FirebaseAnalytics analytics;
 bool usingFirebase = !kDebugMode && !kIsWeb;
-final GoogleSignIn googleSignIn = GoogleSignIn();
+//final GoogleSignIn googleSignIn = GoogleSignIn();
 FirebaseAuth _auth = FirebaseAuth.instance;
 FirebaseMessaging messaging = FirebaseMessaging.instance;
 void main() {
@@ -99,36 +99,36 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  GoogleSignInAccount googleUser;
-  GoogleSignInAuthentication googleAuth;
-  Future<void> signInWithGoogle() async {
-    try {
-      googleUser = await googleSignIn.signIn();
-    } catch (error) {
-      print(error);
-    }
-    setState(() {
-      userName = googleUser.displayName;
-      photoURL = googleUser.photoUrl;
-      email = googleUser.email;
-    });
-    try {
-      googleAuth = await googleUser.authentication;
-      await analytics.logEvent(name: 'signed_in');
-    } catch (error) {
-      print(error);
-    }
-  }
+  // GoogleSignInAccount googleUser;
+  // GoogleSignInAuthentication googleAuth;
+  // Future<void> signInWithGoogle() async {
+  //   try {
+  //     googleUser = await googleSignIn.signIn();
+  //   } catch (error) {
+  //     print(error);
+  //   }
+  //   setState(() {
+  //     userName = googleUser.displayName;
+  //     photoURL = googleUser.photoUrl;
+  //     email = googleUser.email;
+  //   });
+  //   try {
+  //     googleAuth = await googleUser.authentication;
+  //     await analytics.logEvent(name: 'signed_in');
+  //   } catch (error) {
+  //     print(error);
+  //   }
+  // }
 
-  void signOutWithGoogle() async {
-    googleSignIn.signOut();
-    await analytics.logEvent(name: 'signed_out');
-    setState(() {
-      userName = "";
-      email = "";
-      photoURL = "";
-    });
-  }
+  // void signOutWithGoogle() async {
+  //   googleSignIn.signOut();
+  //   await analytics.logEvent(name: 'signed_out');
+  //   setState(() {
+  //     userName = "";
+  //     email = "";
+  //     photoURL = "";
+  //   });
+  // }
 
   Future barcodeScanning() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -175,85 +175,85 @@ class _MyHomePageState extends State<MyHomePage> {
   String userName = '';
   String photoURL = '';
   String email = '';
-  Widget _signInButton() {
-    return CupertinoButton(
-      onPressed: () {
-        signInWithGoogle();
-        setState(() {
-          userName = googleUser.displayName;
-          photoURL = googleUser.photoUrl;
-          email = googleUser.email;
-        });
-      },
-      child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        child: Container(
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image(
-                    image: AssetImage("assets/google_logo.png"), height: 35.0),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Text(
-                    'Sign in with Google',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.grey[700],
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget _signInButton() {
+  //   return CupertinoButton(
+  //     onPressed: () {
+  //       signInWithGoogle();
+  //       setState(() {
+  //         userName = googleUser.displayName;
+  //         photoURL = googleUser.photoUrl;
+  //         email = googleUser.email;
+  //       });
+  //     },
+  //     child: ClipRRect(
+  //       borderRadius: BorderRadius.all(Radius.circular(10)),
+  //       child: Container(
+  //         color: Colors.white,
+  //         child: Padding(
+  //           padding: const EdgeInsets.all(15.0),
+  //           child: Row(
+  //             mainAxisSize: MainAxisSize.min,
+  //             mainAxisAlignment: MainAxisAlignment.center,
+  //             children: <Widget>[
+  //               Image(
+  //                   image: AssetImage("assets/google_logo.png"), height: 35.0),
+  //               Padding(
+  //                 padding: const EdgeInsets.only(left: 10),
+  //                 child: Text(
+  //                   'Sign in with Google',
+  //                   style: TextStyle(
+  //                     fontSize: 20,
+  //                     color: Colors.grey[700],
+  //                   ),
+  //                 ),
+  //               )
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
-  Widget _signOutButton() {
-    return CupertinoButton(
-      child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        child: Container(
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image(
-                    image: AssetImage("assets/google_logo.png"), height: 35.0),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Text(
-                    'Sign out with Google',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.grey[700],
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
-      onPressed: () {
-        signOutWithGoogle();
-        setState(() {
-          userName = "";
-          email = "";
-          photoURL = "";
-        });
-      },
-    );
-  }
+  // Widget _signOutButton() {
+  //   return CupertinoButton(
+  //     child: ClipRRect(
+  //       borderRadius: BorderRadius.all(Radius.circular(10)),
+  //       child: Container(
+  //         color: Colors.white,
+  //         child: Padding(
+  //           padding: const EdgeInsets.all(15.0),
+  //           child: Row(
+  //             mainAxisSize: MainAxisSize.min,
+  //             mainAxisAlignment: MainAxisAlignment.center,
+  //             children: <Widget>[
+  //               Image(
+  //                   image: AssetImage("assets/google_logo.png"), height: 35.0),
+  //               Padding(
+  //                 padding: const EdgeInsets.only(left: 10),
+  //                 child: Text(
+  //                   'Sign out with Google',
+  //                   style: TextStyle(
+  //                     fontSize: 20,
+  //                     color: Colors.grey[700],
+  //                   ),
+  //                 ),
+  //               )
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //     onPressed: () {
+  //       signOutWithGoogle();
+  //       setState(() {
+  //         userName = "";
+  //         email = "";
+  //         photoURL = "";
+  //       });
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -374,6 +374,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                     child: Image.asset(
                                                       'assets/1200px-Brentwood_School_(Los_Angeles)_logo.svg.png',
                                                       width: 50,
+                                                      cacheHeight: 300,
                                                     ),
                                                   ),
                                                 ),
