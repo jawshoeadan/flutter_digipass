@@ -34,7 +34,7 @@ jobs:
           # App Store Connect private key with proper rights
           appStoreConnectPrivateKey: ${{ secrets.APC_PRIVATE_KEY }}
           # Identifier of the private key
-          keyID: 3S697P578G
+          keyID: ${{ secrets.API_KEY_ID }}
           # Issuer identifier
           issuerID: 0690e069-9ae9-41cf-8298-5d31d85c9b8d
           # Id of the newly created temporary kechain
