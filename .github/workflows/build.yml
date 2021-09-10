@@ -81,7 +81,6 @@ jobs:
           api-private-key: ${{ secrets.APC_PRIVATE_KEY }}
           
      ## - name: Download Development Profiles
-  # You may pin to the exact commit or the version.
   # uses: Apple-Actions/download-provisioning-profiles@3167792207a5b26099bc0ca22b5010a323dd2a0b
       ##  uses: Apple-Actions/download-provisioning-profiles@v1
     ##    with:
