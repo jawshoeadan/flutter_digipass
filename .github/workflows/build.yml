@@ -20,11 +20,6 @@ jobs:
           cd ios && rm -f Podfile.lock
           flutter pub get
           flutter precache --ios && pod install
-        
-      - name: Bump build number
-        run: |
-          git pull
-          perl -i -pe 's/^(version:\s+\d+\.\d+\.\d+\+)(\d+)$/$1.($2+1)/e' pubspec.yaml
       - name: Bump build version
         run: |
           git add . 
