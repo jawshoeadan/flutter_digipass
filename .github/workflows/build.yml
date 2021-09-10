@@ -10,7 +10,10 @@ jobs:
       - name: Download Flutter SDK
         run: |
           brew install --cask flutter
-          
+      - name: Bump build number
+        run: |
+          git pull
+          perl -i -pe 's/^(version:\s+\d+\.\d+\.\d+\+)(\d+)$/$1.($2+1)/e' pubspec.yaml
       - name: Setup Flutter
         run: |
           rm -f pubspec.lock
