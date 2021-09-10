@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-11
     steps:
       - uses: actions/checkout@v2
       - name: Download Flutter SDK
@@ -60,9 +60,9 @@ jobs:
           # The type of profile to download. One of IOS_APP_DEVELOPMENT, IOS_APP_STORE, IOS_APP_ADHOC, IOS_APP_INHOUSE, MAC_APP_DEVELOPMENT, MAC_APP_STORE, MAC_APP_DIRECT, TVOS_APP_DEVELOPMENT, TVOS_APP_STORE, TVOS_APP_ADHOC, TVOS_APP_INHOUSE
           profile-type: IOS_APP_STORE
           # The AppStore Connect API Key Issuer Identifier
-          issuer-id: 0690e069-9ae9-41cf-8298-5d31d85c9b8d
+          issuer-id: ${{ secrets.ISSUER_ID }}
           # The Key ID for AppStore Connect API
-          api-key-id: 3S697P578G
+          api-key-id: ${{ secrets.API_KEY_ID }}
           # The PKCS8 format Private Key for AppStore Connect API
           api-private-key: ${{ secrets.APC_PRIVATE_KEY }}
 
@@ -74,9 +74,9 @@ jobs:
           # The type of profile to download. One of IOS_APP_DEVELOPMENT, IOS_APP_STORE, IOS_APP_ADHOC, IOS_APP_INHOUSE, MAC_APP_DEVELOPMENT, MAC_APP_STORE, MAC_APP_DIRECT, TVOS_APP_DEVELOPMENT, TVOS_APP_STORE, TVOS_APP_ADHOC, TVOS_APP_INHOUSE
           profile-type: IOS_APP_STORE
           # The AppStore Connect API Key Issuer Identifier
-          issuer-id: 0690e069-9ae9-41cf-8298-5d31d85c9b8d
+          issuer-id: ${{ secrets.ISSUER_ID }}
           # The Key ID for AppStore Connect API
-          api-key-id: 3S697P578G
+          api-key-id: ${{ secrets.API_KEY_ID }}
           # The PKCS8 format Private Key for AppStore Connect API
           api-private-key: ${{ secrets.APC_PRIVATE_KEY }}
           
