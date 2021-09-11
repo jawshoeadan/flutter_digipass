@@ -15,38 +15,35 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-late FirebaseAnalytics analytics;
-bool usingFirebase = !kDebugMode && !kIsWeb;
+late FirebaseAnalytics analytics = FirebaseAnalytics();
 final GoogleSignIn googleSignIn = GoogleSignIn();
-FirebaseAuth _auth = FirebaseAuth.instance;
+FirebaseAuth auth = FirebaseAuth.instance;
 FirebaseMessaging messaging = FirebaseMessaging.instance;
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
-Future<void> initializeFlutterFire() async {
-  FirebaseApp app = await Firebase.initializeApp();
-  NotificationSettings settings = await messaging.requestPermission();
-  analytics = FirebaseAnalytics();
-  FirebasePerformance performance = FirebasePerformance.instance;
-  await FirebaseCrashlytics.instance
-      .setCrashlyticsCollectionEnabled(!kDebugMode);
-  Function? originalOnError = FlutterError.onError;
-  FlutterError.onError = (FlutterErrorDetails errorDetails) async {
-    await FirebaseCrashlytics.instance.recordFlutterError(errorDetails);
-    // Forward to original handler.
-    originalOnError!(errorDetails);
-  };
-}
+// Future<void> initializeFlutterFire() async {
+//   await Firebase.initializeApp();
+//   NotificationSettings settings = await messaging.requestPermission();
+//   analytics = FirebaseAnalytics();
+//   FirebasePerformance performance = FirebasePerformance.instance;
+//   await FirebaseCrashlytics.instance
+//       .setCrashlyticsCollectionEnabled(!kDebugMode);
+//   Function? originalOnError = FlutterError.onError;
+//   FlutterError.onError = (FlutterErrorDetails errorDetails) async {
+//     await FirebaseCrashlytics.instance.recordFlutterError(errorDetails);
+//     // Forward to original handler.
+//     originalOnError!(errorDetails);
+//   };
+// }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    if (usingFirebase) {
-      initializeFlutterFire();
-    }
     SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp],
     );
@@ -78,11 +75,41 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  // Set default `_initialized` and `_error` state to false
+  bool _initialized = false;
+  bool _error = false;
   String scanned = "";
   String _scanned = "";
+  void initializeFlutterFire() async {
+    try {
+      // Wait for Firebase to initialize and set `_initialized` state to true
+
+      await Firebase.initializeApp();
+      NotificationSettings settings = await messaging.requestPermission();
+      FirebasePerformance performance = FirebasePerformance.instance;
+      await FirebaseCrashlytics.instance
+          .setCrashlyticsCollectionEnabled(!kDebugMode);
+      Function? originalOnError = FlutterError.onError;
+      print("Current user" + auth.currentUser.toString());
+      FlutterError.onError = (FlutterErrorDetails errorDetails) async {
+        await FirebaseCrashlytics.instance.recordFlutterError(errorDetails);
+
+        originalOnError!(errorDetails);
+      };
+      setState(() {
+        _initialized = true;
+      });
+    } catch (e) {
+      // Set `_error` state to true if Firebase initialization fails
+      setState(() {
+        _error = true;
+      });
+    }
+  }
 
   @override
   initState() {
+    initializeFlutterFire();
     if (!kDebugMode) {
       loadScan();
     }
@@ -103,21 +130,19 @@ class _MyHomePageState extends State<MyHomePage> {
   GoogleSignInAccount? googleUser;
   GoogleSignInAuthentication? googleAuth;
   Future<void> signInWithGoogle() async {
-    try {
-      googleUser = await googleSignIn.signIn();
-    } catch (error) {
-      print(error);
-    }
+    googleUser = await googleSignIn.signIn();
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser!.authentication;
     setState(() {
       userName = googleUser!.displayName;
       photoURL = googleUser!.photoUrl;
       email = googleUser!.email;
     });
-    try {
-      googleAuth = await googleUser!.authentication;
-    } catch (error) {
-      print(error);
-    }
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth!.accessToken,
+      idToken: googleAuth.idToken,
+    );
+    await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   void signOutWithGoogle() async {
@@ -132,9 +157,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future barcodeScanning() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (usingFirebase) {
-      await analytics.logEvent(name: 'push_scan_button');
-    }
+    // if (usingFirebase) {
+    //   await analytics.logEvent(name: 'push_scan_button');
+    // }
     if (kReleaseMode) {
       try {
         String barcode = await FlutterBarcodeScanner.scanBarcode(
@@ -155,10 +180,6 @@ class _MyHomePageState extends State<MyHomePage> {
         setState(() {
           _scanned = "There was an error scanning your card.";
         });
-        if (usingFirebase) {
-          await analytics
-              .logEvent(name: 'barcode_changed', parameters: {'id': _scanned});
-        }
       }
     } else {
       String barcode = "0016466";
@@ -174,7 +195,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   String? userName = '';
   String? photoURL = '';
-  String email = '';
+  String? email = '';
   Widget _signInButton() {
     return CupertinoButton(
       onPressed: () async {
@@ -476,7 +497,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             style: TextStyle(
                               color: Colors.white,
                             )),
-                        Text(email,
+                        Text(email!,
                             style: TextStyle(
                               color: Colors.white,
                             )),
