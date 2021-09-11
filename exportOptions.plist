@@ -9,9 +9,9 @@
 	<key>provisioningProfiles</key>
 	<dict>
 		<key>com.EitanandJosh.DigiPass</key>
-		<string>71405741-9d67-48e9-a517-86a4de82ea52</string>
+		<string>17c0432d-8575-48ad-b0ba-c91cb2b09ec9</string>
 		<key>com.EitanandJosh.DigiPass.ImageNotification</key>
-		<string>985a1f2a-0eb8-4b8b-a7cf-98746f9d8e18</string>
+		<string>98071de5-df1d-42c8-9a2b-6020de496ed8</string>
 	</dict>
 	<key>signingCertificate</key>
 	<string>iOS Distribution</string>
