@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:photo_view/photo_view.dart';
 
 class ScheduleView extends StatelessWidget {
-  const ScheduleView({Key key}) : super(key: key);
+  const ScheduleView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -20,7 +20,7 @@ jobs:
           cd ios && rm -f Podfile.lock
           flutter pub get
           flutter precache --ios && pod install
-      - name: Bump build version
+      - name: Commit bumped build version
         run: |
           git add . 
           git commit -m "Bump build version"

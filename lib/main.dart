@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter/foundation.dart';
-//import 'package:google_sign_in/google_sign_in.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -15,11 +15,12 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-FirebaseAnalytics analytics;
+late FirebaseAnalytics analytics;
 bool usingFirebase = !kDebugMode && !kIsWeb;
-//final GoogleSignIn googleSignIn = GoogleSignIn();
+final GoogleSignIn googleSignIn = GoogleSignIn();
 FirebaseAuth _auth = FirebaseAuth.instance;
 FirebaseMessaging messaging = FirebaseMessaging.instance;
+
 void main() {
   runApp(MyApp());
 }
@@ -31,11 +32,11 @@ Future<void> initializeFlutterFire() async {
   FirebasePerformance performance = FirebasePerformance.instance;
   await FirebaseCrashlytics.instance
       .setCrashlyticsCollectionEnabled(!kDebugMode);
-  Function originalOnError = FlutterError.onError;
+  Function? originalOnError = FlutterError.onError;
   FlutterError.onError = (FlutterErrorDetails errorDetails) async {
     await FirebaseCrashlytics.instance.recordFlutterError(errorDetails);
     // Forward to original handler.
-    originalOnError(errorDetails);
+    originalOnError!(errorDetails);
   };
 }
 
@@ -59,7 +60,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -70,7 +71,7 @@ class MyHomePage extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
-  final String title;
+  final String? title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -94,41 +95,40 @@ class _MyHomePageState extends State<MyHomePage> {
       _scanned = (prefs.getString('scan') ?? "");
     });
 
-    if (usingFirebase) {
-      await analytics.logEvent(name: 'loadedCard');
+    // if (usingFirebase) {
+    //   await analytics.logEvent(name: 'loadedCard');
+    // }
+  }
+
+  GoogleSignInAccount? googleUser;
+  GoogleSignInAuthentication? googleAuth;
+  Future<void> signInWithGoogle() async {
+    try {
+      googleUser = await googleSignIn.signIn();
+    } catch (error) {
+      print(error);
+    }
+    setState(() {
+      userName = googleUser!.displayName;
+      photoURL = googleUser!.photoUrl;
+      email = googleUser!.email;
+    });
+    try {
+      googleAuth = await googleUser!.authentication;
+    } catch (error) {
+      print(error);
     }
   }
 
-  // GoogleSignInAccount googleUser;
-  // GoogleSignInAuthentication googleAuth;
-  // Future<void> signInWithGoogle() async {
-  //   try {
-  //     googleUser = await googleSignIn.signIn();
-  //   } catch (error) {
-  //     print(error);
-  //   }
-  //   setState(() {
-  //     userName = googleUser.displayName;
-  //     photoURL = googleUser.photoUrl;
-  //     email = googleUser.email;
-  //   });
-  //   try {
-  //     googleAuth = await googleUser.authentication;
-  //     await analytics.logEvent(name: 'signed_in');
-  //   } catch (error) {
-  //     print(error);
-  //   }
-  // }
-
-  // void signOutWithGoogle() async {
-  //   googleSignIn.signOut();
-  //   await analytics.logEvent(name: 'signed_out');
-  //   setState(() {
-  //     userName = "";
-  //     email = "";
-  //     photoURL = "";
-  //   });
-  // }
+  void signOutWithGoogle() async {
+    googleSignIn.signOut();
+    await analytics.logEvent(name: 'signed_out');
+    setState(() {
+      userName = "";
+      email = "";
+      photoURL = "";
+    });
+  }
 
   Future barcodeScanning() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -172,88 +172,88 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  String userName = '';
-  String photoURL = '';
+  String? userName = '';
+  String? photoURL = '';
   String email = '';
-  // Widget _signInButton() {
-  //   return CupertinoButton(
-  //     onPressed: () {
-  //       signInWithGoogle();
-  //       setState(() {
-  //         userName = googleUser.displayName;
-  //         photoURL = googleUser.photoUrl;
-  //         email = googleUser.email;
-  //       });
-  //     },
-  //     child: ClipRRect(
-  //       borderRadius: BorderRadius.all(Radius.circular(10)),
-  //       child: Container(
-  //         color: Colors.white,
-  //         child: Padding(
-  //           padding: const EdgeInsets.all(15.0),
-  //           child: Row(
-  //             mainAxisSize: MainAxisSize.min,
-  //             mainAxisAlignment: MainAxisAlignment.center,
-  //             children: <Widget>[
-  //               Image(
-  //                   image: AssetImage("assets/google_logo.png"), height: 35.0),
-  //               Padding(
-  //                 padding: const EdgeInsets.only(left: 10),
-  //                 child: Text(
-  //                   'Sign in with Google',
-  //                   style: TextStyle(
-  //                     fontSize: 20,
-  //                     color: Colors.grey[700],
-  //                   ),
-  //                 ),
-  //               )
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+  Widget _signInButton() {
+    return CupertinoButton(
+      onPressed: () async {
+        await signInWithGoogle();
+        setState(() {
+          userName = googleUser!.displayName;
+          photoURL = googleUser!.photoUrl;
+          email = googleUser!.email;
+        });
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        child: Container(
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image(
+                    image: AssetImage("assets/google_logo.png"), height: 35.0),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Text(
+                    'Sign in with Google',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
-  // Widget _signOutButton() {
-  //   return CupertinoButton(
-  //     child: ClipRRect(
-  //       borderRadius: BorderRadius.all(Radius.circular(10)),
-  //       child: Container(
-  //         color: Colors.white,
-  //         child: Padding(
-  //           padding: const EdgeInsets.all(15.0),
-  //           child: Row(
-  //             mainAxisSize: MainAxisSize.min,
-  //             mainAxisAlignment: MainAxisAlignment.center,
-  //             children: <Widget>[
-  //               Image(
-  //                   image: AssetImage("assets/google_logo.png"), height: 35.0),
-  //               Padding(
-  //                 padding: const EdgeInsets.only(left: 10),
-  //                 child: Text(
-  //                   'Sign out with Google',
-  //                   style: TextStyle(
-  //                     fontSize: 20,
-  //                     color: Colors.grey[700],
-  //                   ),
-  //                 ),
-  //               )
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //     onPressed: () {
-  //       signOutWithGoogle();
-  //       setState(() {
-  //         userName = "";
-  //         email = "";
-  //         photoURL = "";
-  //       });
-  //     },
-  //   );
-  // }
+  Widget _signOutButton() {
+    return CupertinoButton(
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        child: Container(
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image(
+                    image: AssetImage("assets/google_logo.png"), height: 35.0),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Text(
+                    'Sign out with Google',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+      onPressed: () {
+        signOutWithGoogle();
+        setState(() {
+          userName = "";
+          email = "";
+          photoURL = "";
+        });
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -469,20 +469,18 @@ class _MyHomePageState extends State<MyHomePage> {
                               },
                             ),
                           ),
-                        ),
+                        ), */
                         _signInButton(),
                         _signOutButton(),
                         Text(userName ?? '',
                             style: TextStyle(
                               color: Colors.white,
                             )),
-                        Text(email ?? '',
+                        Text(email,
                             style: TextStyle(
                               color: Colors.white,
                             )),
-                        if (photoURL != '')
-                          CachedNetworkImage(imageUrl: 'https://$photoURL'),
-                        SizedBox(height: 100)*/
+                        SizedBox(height: 100)
                       ],
                     ),
                   ),
