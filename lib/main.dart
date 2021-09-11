@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 //import 'package:flutter_digipass/photo_view.dart';
 import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,6 +14,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:screen_brightness/screen_brightness.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -81,8 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // Set default `_initialized` and `_error` state to false
   bool _initialized = false;
   bool _error = false;
-  String scanned = "";
-  String _scanned = "";
+  int eagleCardNumber = 0;
   String nameText = "";
   String emailText = "";
   bool shouldShowSignInButton = true;
@@ -94,6 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
       FirebaseMessaging messaging = FirebaseMessaging.instance;
       NotificationSettings settings = await messaging.requestPermission();
       FirebasePerformance performance = FirebasePerformance.instance;
+
       await FirebaseCrashlytics.instance
           .setCrashlyticsCollectionEnabled(!kDebugMode);
       Function? originalOnError = FlutterError.onError;
@@ -132,22 +132,23 @@ class _MyHomePageState extends State<MyHomePage> {
       }
       shouldShowSignInButton = FirebaseAuth.instance.currentUser == null;
     });
-    if (!kDebugMode) {
-      loadScan();
-    }
+
+    // if (!kDebugMode) {
+    //   loadScan();
+    // }
     super.initState();
   }
 
-  loadScan() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _scanned = (prefs.getString('scan') ?? "");
-    });
+  // loadScan() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     _scanned = (prefs.getString('scan') ?? "");
+  //   });
 
-    // if (usingFirebase) {
-    //   await analytics.logEvent(name: 'loadedCard');
-    // }
-  }
+  //   // if (usingFirebase) {
+  //   //   await analytics.logEvent(name: 'loadedCard');
+  //   // }
+  // }
 
   GoogleSignInAccount? googleUser;
   GoogleSignInAuthentication? googleAuth;
@@ -175,43 +176,42 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  Future barcodeScanning() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    // if (usingFirebase) {
-    //   await analytics.logEvent(name: 'push_scan_button');
-    // }
-    if (kReleaseMode) {
-      try {
-        String barcode = await FlutterBarcodeScanner.scanBarcode(
-            "ff6666", "Cancel", false, ScanMode.BARCODE);
-        setState(() {
-          if (barcode != "-1") {
-            if (barcode.startsWith('00', 0)) {
-              barcode = barcode.substring(2);
-            }
-            _scanned = '$barcode';
-
-            prefs.setString('scan', barcode);
-            print(barcode);
-          }
-        });
-      } on PlatformException catch (e) {
-        print(e);
-        setState(() {
-          _scanned = "There was an error scanning your card.";
-        });
-      }
-    } else {
-      String barcode = "0016466";
-      setState(() {
-        if (barcode.startsWith('00', 0)) {
-          barcode = barcode.substring(2);
-        }
-        _scanned = '$barcode';
-        prefs.setString('scan', '$barcode');
-      });
-    }
-  }
+  // Future barcodeScanning() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   // if (usingFirebase) {
+  //   //   await analytics.logEvent(name: 'push_scan_button');
+  //   // }
+  //   if (kReleaseMode) {
+  //     try {
+  //       String barcode = await FlutterBarcodeScanner.scanBarcode(
+  //           "ff6666", "Cancel", false, ScanMode.BARCODE);
+  //       setState(() {
+  //         if (barcode != "-1") {
+  //           if (barcode.startsWith('00', 0)) {
+  //             barcode = barcode.substring(2);
+  //           }
+  //           _scanned = '$barcode';
+  //           prefs.setString('scan', barcode);
+  //           print(barcode);
+  //         }
+  //       });
+  //     } on PlatformException catch (e) {
+  //       print(e);
+  //       setState(() {
+  //         _scanned = "There was an error scanning your card.";
+  //       });
+  //     }
+  //   } else {
+  //     String barcode = "0016466";
+  //     setState(() {
+  //       if (barcode.startsWith('00', 0)) {
+  //         barcode = barcode.substring(2);
+  //       }
+  //       _scanned = '$barcode';
+  //       prefs.setString('scan', '$barcode');
+  //     });
+  //   }
+  // }
 
   String? userName = '';
   String? photoURL = '';
@@ -362,7 +362,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Visibility(
-                            visible: (_scanned != ""),
+                            visible: (eagleCardNumber != 0),
                             child: Container(
                               constraints: BoxConstraints(maxWidth: 400),
                               decoration: BoxDecoration(
@@ -435,7 +435,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                       // top: 15.0,
                                                     ),
                                                     child: Text(
-                                                      '*$_scanned*',
+                                                      '*$eagleCardNumber*',
                                                       style: TextStyle(
                                                         fontFamily: 'Barcode39',
                                                         fontWeight:
@@ -450,7 +450,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                             ),
 
                                             Text(
-                                              'Student ID: $_scanned',
+                                              'Student ID: $eagleCardNumber',
                                               style: TextStyle(
                                                 fontFamily: 'SFUI-Medium',
                                                 fontWeight: FontWeight.normal,
