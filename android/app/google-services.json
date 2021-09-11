@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "38014690112",
+    "project_id": "digipass-8ce3a",
+    "storage_bucket": "digipass-8ce3a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:38014690112:android:a45f98485acc6afb23d0a5",
+        "android_client_info": {
+          "package_name": "com.EitanandJosh.DigiPass"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "38014690112-u3sau4pfp97g0khcek6qf0il93m90r6l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCjzpD-YceCmLc5evkh9krxjqf7sRPcIQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "38014690112-u3sau4pfp97g0khcek6qf0il93m90r6l.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "38014690112-noru7v5t7c0jko0v29a4sbhnirrv73vt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.EitanandJosh.DigiPass"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
