@@ -21,11 +21,6 @@ environment:
   sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
-  flutter_sfsymbols: ^2.0.0
-  flutter_barcode_scanner: ^2.0.0
-  shared_preferences: ^2.0.7
-  cached_network_image: ^3.1.0
-  photo_view: ^0.12.0
   firebase_core: ^1.6.0
   firebase_analytics: ^8.3.2
   firebase_performance: ^0.7.1
@@ -37,9 +32,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.3
   cloud_firestore: ^2.5.2
  
 
@@ -84,9 +76,7 @@ flutter:
     - family: Barcode39
       fonts:
        - asset: assets/LibreBarcode39-Regular.ttf
-    - family: sficonsets
-      fonts:
-       - asset: packages/flutter_sfsymbols/fonts/sficonsets.ttf
+
           
   #   - family: Trajan Pro
   #     fonts:
