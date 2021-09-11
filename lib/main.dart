@@ -79,12 +79,15 @@ class _MyHomePageState extends State<MyHomePage> {
   bool _error = false;
   String scanned = "";
   String _scanned = "";
-  FirebaseAuth auth = FirebaseAuth.instance;
+  String nameText = "";
+  String emailText = "";
+
   void initializeFlutterFire() async {
     try {
       // Wait for Firebase to initialize and set `_initialized` state to true
 
       await Firebase.initializeApp();
+      FirebaseAuth auth = FirebaseAuth.instance;
       FirebaseMessaging messaging = FirebaseMessaging.instance;
       NotificationSettings settings = await messaging.requestPermission();
       FirebasePerformance performance = FirebasePerformance.instance;
@@ -111,6 +114,10 @@ class _MyHomePageState extends State<MyHomePage> {
   initState() {
     initializeFlutterFire();
     ScreenBrightness.setScreenBrightness(1.0);
+    FirebaseAuth.instance.authStateChanges().listen((firebaseUser) {
+      emailText = firebaseUser!.email!;
+      nameText = firebaseUser.displayName!;
+    });
     if (!kDebugMode) {
       loadScan();
     }
@@ -135,9 +142,8 @@ class _MyHomePageState extends State<MyHomePage> {
     final GoogleSignInAuthentication? googleAuth =
         await googleUser!.authentication;
     setState(() {
-      userName = googleUser!.displayName;
-      photoURL = googleUser!.photoUrl;
-      email = googleUser!.email;
+      emailText = googleUser!.email;
+      nameText = googleUser!.displayName!;
     });
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth!.accessToken,
@@ -150,9 +156,8 @@ class _MyHomePageState extends State<MyHomePage> {
     googleSignIn.signOut();
     FirebaseAuth.instance.signOut();
     setState(() {
-      userName = "";
-      email = "";
-      photoURL = "";
+      emailText = '';
+      nameText = '';
     });
   }
 
@@ -494,11 +499,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         ), */
                         _signInButton(),
                         _signOutButton(),
-                        Text(auth.currentUser?.displayName ?? '',
+                        Text(nameText,
                             style: TextStyle(
                               color: Colors.white,
                             )),
-                        Text(auth.currentUser?.email ?? '',
+                        Text(emailText,
                             style: TextStyle(
                               color: Colors.white,
                             )),
