@@ -18,7 +18,6 @@ import 'package:screen_brightness/screen_brightness.dart';
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
 
-
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -80,10 +79,11 @@ class _MyHomePageState extends State<MyHomePage> {
   bool _error = false;
   String scanned = "";
   String _scanned = "";
+  FirebaseAuth auth = FirebaseAuth.instance;
   void initializeFlutterFire() async {
     try {
       // Wait for Firebase to initialize and set `_initialized` state to true
-      
+
       await Firebase.initializeApp();
       FirebaseMessaging messaging = FirebaseMessaging.instance;
       NotificationSettings settings = await messaging.requestPermission();
@@ -148,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void signOutWithGoogle() async {
     googleSignIn.signOut();
-    Firebase.instance.signOut();
+    FirebaseAuth.instance.signOut();
     setState(() {
       userName = "";
       email = "";
