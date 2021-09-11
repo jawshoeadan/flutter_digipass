@@ -46,12 +46,22 @@ class MyApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp],
     );
-    return CupertinoApp(
-      debugShowCheckedModeBanner: false,
-      theme: CupertinoThemeData(),
-      title: 'Flutter Demo',
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+    return FutureBuilder(
+        future: Firebase.initializeApp(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return CupertinoApp(
+              debugShowCheckedModeBanner: false,
+              theme: CupertinoThemeData(),
+              title: 'Flutter Demo',
+              home: MyHomePage(title: 'Flutter Demo Home Page'),
+            );
+          }
+          return CupertinoApp(
+              home: Container(
+            child: Text("Loading"),
+          ));
+        });
   }
 }
 
@@ -86,7 +96,6 @@ class _MyHomePageState extends State<MyHomePage> {
     try {
       // Wait for Firebase to initialize and set `_initialized` state to true
 
-      await Firebase.initializeApp();
       FirebaseAuth auth = FirebaseAuth.instance;
       FirebaseMessaging messaging = FirebaseMessaging.instance;
       NotificationSettings settings = await messaging.requestPermission();
@@ -115,8 +124,8 @@ class _MyHomePageState extends State<MyHomePage> {
     initializeFlutterFire();
     ScreenBrightness.setScreenBrightness(1.0);
     FirebaseAuth.instance.authStateChanges().listen((firebaseUser) {
-      emailText = firebaseUser!.email!;
-      nameText = firebaseUser.displayName!;
+      emailText = firebaseUser?.email ?? "";
+      nameText = firebaseUser?.displayName ?? "";
     });
     if (!kDebugMode) {
       loadScan();
