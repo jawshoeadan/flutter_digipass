@@ -114,9 +114,17 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void getEagleCardNumber() async {
-    FirebaseFirestore.instance
-        .collection("ids")
-        .where("email", isEqualTo: emailText);
+    var snapshot = await FirebaseFirestore.instance
+        .collection('ids')
+        .where("email", isEqualTo: emailText)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        setState(() {
+          eagleCardNumber = doc["eagleCardNum"];
+        });
+      });
+    });
   }
 
   @override
@@ -126,7 +134,6 @@ class _MyHomePageState extends State<MyHomePage> {
     FirebaseAuth.instance.authStateChanges().listen((firebaseUser) {
       emailText = firebaseUser?.email ?? "";
       nameText = firebaseUser?.displayName ?? "";
-      print(shouldShowSignInButton);
       if (firebaseUser?.email != null) {
         getEagleCardNumber();
         setState(() {
