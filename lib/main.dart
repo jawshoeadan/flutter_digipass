@@ -57,26 +57,20 @@ class MyApp extends StatelessWidget {
               home: MyHomePage(title: 'Flutter Demo Home Page'),
             );
           }
-          return CupertinoApp(
-              home: Container(
-            child: Text("Loading"),
-          ));
+          return CupertinoApp(home: Container(color: Colors.black));
         });
   }
 }
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, this.title}) : super(key: key);
-
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
-
   // This class is the configuration for the state. It holds the values (in this
   // case the title) provided by the parent (in this case the App widget) and
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
-
   final String? title;
 
   @override
@@ -91,11 +85,11 @@ class _MyHomePageState extends State<MyHomePage> {
   String _scanned = "";
   String nameText = "";
   String emailText = "";
+  bool shouldShowSignInButton = true;
 
   void initializeFlutterFire() async {
     try {
       // Wait for Firebase to initialize and set `_initialized` state to true
-
       FirebaseAuth auth = FirebaseAuth.instance;
       FirebaseMessaging messaging = FirebaseMessaging.instance;
       NotificationSettings settings = await messaging.requestPermission();
@@ -126,6 +120,17 @@ class _MyHomePageState extends State<MyHomePage> {
     FirebaseAuth.instance.authStateChanges().listen((firebaseUser) {
       emailText = firebaseUser?.email ?? "";
       nameText = firebaseUser?.displayName ?? "";
+      print(shouldShowSignInButton);
+      if (firebaseUser?.email != null) {
+        setState(() {
+          shouldShowSignInButton = true;
+        });
+      } else {
+        setState(() {
+          shouldShowSignInButton = false;
+        });
+      }
+      shouldShowSignInButton = FirebaseAuth.instance.currentUser == null;
     });
     if (!kDebugMode) {
       loadScan();
@@ -215,11 +220,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return CupertinoButton(
       onPressed: () async {
         await signInWithGoogle();
-        setState(() {
-          userName = googleUser!.displayName;
-          photoURL = googleUser!.photoUrl;
-          email = googleUser!.email;
-        });
       },
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -345,7 +345,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         : Colors.white,
                                   ))
                               : Text(
-                                  'Scan a card to get started.',
+                                  'Login to get started.',
                                   style: TextStyle(
                                     fontFamily: 'SFUI-Medium',
                                     color: MediaQuery.of(context)
@@ -506,15 +506,24 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                         ), */
-                        _signInButton(),
-                        _signOutButton(),
+                        shouldShowSignInButton
+                            ? _signInButton()
+                            : _signOutButton(),
                         Text(nameText,
                             style: TextStyle(
-                              color: Colors.white,
+                              color:
+                                  MediaQuery.of(context).platformBrightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Colors.black,
                             )),
                         Text(emailText,
                             style: TextStyle(
-                              color: Colors.white,
+                              color:
+                                  MediaQuery.of(context).platformBrightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Colors.black,
                             )),
                         SizedBox(height: 100)
                       ],
@@ -525,30 +534,30 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
-        Container(
-          padding: EdgeInsets.all(20.0),
-          alignment: Alignment.bottomRight,
-          child: ClipPath(
-            clipper: ShapeBorderClipper(shape: CircleBorder()),
-            child: Container(
-              color: Colors.blue.shade700,
-              child: CupertinoButton(
-                onPressed: () {
-                  barcodeScanning();
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(3.0),
-                  child: Icon(SFSymbols.plus_rectangle_fill_on_rectangle_fill,
-                      color: MediaQuery.of(context).platformBrightness ==
-                              Brightness.light
-                          ? Colors.white
-                          : Colors.black,
-                      size: 30),
-                ),
-              ),
-            ),
-          ),
-        ),
+        // Container(
+        //   padding: EdgeInsets.all(20.0),
+        //   alignment: Alignment.bottomRight,
+        //   child: ClipPath(
+        //     clipper: ShapeBorderClipper(shape: CircleBorder()),
+        //     child: Container(
+        //       color: Colors.blue.shade700,
+        //       child: CupertinoButton(
+        //         onPressed: () {
+        //           barcodeScanning();
+        //         },
+        //         child: Padding(
+        //           padding: const EdgeInsets.all(3.0),
+        //           child: Icon(SFSymbols.plus_rectangle_fill_on_rectangle_fill,
+        //               color: MediaQuery.of(context).platformBrightness ==
+        //                       Brightness.light
+        //                   ? Colors.white
+        //                   : Colors.black,
+        //               size: 30),
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }
