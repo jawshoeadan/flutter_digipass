@@ -113,6 +113,12 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  void getEagleCardNumber() async {
+    FirebaseFirestore.instance
+        .collection("ids")
+        .where("email", isEqualTo: emailText);
+  }
+
   @override
   initState() {
     initializeFlutterFire();
@@ -122,6 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
       nameText = firebaseUser?.displayName ?? "";
       print(shouldShowSignInButton);
       if (firebaseUser?.email != null) {
+        getEagleCardNumber();
         setState(() {
           shouldShowSignInButton = true;
         });
