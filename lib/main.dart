@@ -8,20 +8,20 @@ import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
+// import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:screen_brightness/screen_brightness.dart';
 
-late FirebaseAnalytics analytics = FirebaseAnalytics();
 final GoogleSignIn googleSignIn = GoogleSignIn();
-FirebaseAuth auth = FirebaseAuth.instance;
-FirebaseMessaging messaging = FirebaseMessaging.instance;
+
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
   runApp(MyApp());
 }
 
@@ -83,14 +83,14 @@ class _MyHomePageState extends State<MyHomePage> {
   void initializeFlutterFire() async {
     try {
       // Wait for Firebase to initialize and set `_initialized` state to true
-
+      
       await Firebase.initializeApp();
+      FirebaseMessaging messaging = FirebaseMessaging.instance;
       NotificationSettings settings = await messaging.requestPermission();
       FirebasePerformance performance = FirebasePerformance.instance;
       await FirebaseCrashlytics.instance
           .setCrashlyticsCollectionEnabled(!kDebugMode);
       Function? originalOnError = FlutterError.onError;
-      print("Current user" + auth.currentUser.toString());
       FlutterError.onError = (FlutterErrorDetails errorDetails) async {
         await FirebaseCrashlytics.instance.recordFlutterError(errorDetails);
 
@@ -110,6 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   initState() {
     initializeFlutterFire();
+    ScreenBrightness.setScreenBrightness(1.0);
     if (!kDebugMode) {
       loadScan();
     }
@@ -147,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void signOutWithGoogle() async {
     googleSignIn.signOut();
-    await analytics.logEvent(name: 'signed_out');
+    Firebase.instance.signOut();
     setState(() {
       userName = "";
       email = "";
@@ -493,11 +494,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         ), */
                         _signInButton(),
                         _signOutButton(),
-                        Text(userName ?? '',
+                        Text(auth.currentUser?.displayName ?? '',
                             style: TextStyle(
                               color: Colors.white,
                             )),
-                        Text(email!,
+                        Text(auth.currentUser?.email ?? '',
                             style: TextStyle(
                               color: Colors.white,
                             )),
