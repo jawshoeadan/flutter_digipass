@@ -345,17 +345,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: kDebugMode
-                              ? Text(
-                                  "When using debug mode, barcode data is simulated.",
-                                  style: TextStyle(
-                                    fontFamily: 'SFUI-Medium',
-                                    color: MediaQuery.of(context)
-                                                .platformBrightness ==
-                                            Brightness.light
-                                        ? Colors.black
-                                        : Colors.white,
-                                  ))
+                          child: emailText != ''
+                              ? Container()
                               : Text(
                                   'Login to get started.',
                                   style: TextStyle(
@@ -449,6 +440,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                     child: Text(
                                                       '*$eagleCardNumber*',
                                                       style: TextStyle(
+                                                        inherit: false,
                                                         fontFamily: 'Barcode39',
                                                         fontWeight:
                                                             FontWeight.normal,
@@ -465,7 +457,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                               'Student ID: $eagleCardNumber',
                                               style: TextStyle(
                                                 fontFamily: 'SFUI-Medium',
-                                                fontWeight: FontWeight.normal,
                                                 color: Colors.black,
                                                 fontSize: 20,
                                               ),
