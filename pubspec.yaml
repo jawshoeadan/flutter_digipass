@@ -74,9 +74,9 @@ flutter:
     - family: SFUI-Semibold
       fonts:
        - asset: assets/SFText-Semibold.otf 
-    - family: Barcode39
-      fonts:
-       - asset: assets/LibreBarcode39-Regular.ttf
+    # - family: Barcode39
+    #   fonts:
+    #    - asset: assets/LibreBarcode39-Regular.ttf
        
 
           
