@@ -1,3 +1,4 @@
+import 'package:barcode_widget/barcode_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:cached_network_image/cached_network_image.dart';
-// import 'package:firebase_analytics/firebase_analytics.dart';
+ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -91,6 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
       FirebaseMessaging messaging = FirebaseMessaging.instance;
       NotificationSettings settings = await messaging.requestPermission();
       FirebasePerformance performance = FirebasePerformance.instance;
+      FirebaseAnalytics analytics = FirebaseAnalytics();
 
       await FirebaseCrashlytics.instance
           .setCrashlyticsCollectionEnabled(!kDebugMode);
@@ -280,7 +282,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: Text(
-                    'Sign out with Google',
+                    'Sign out',
                     style: TextStyle(
                       fontSize: 20,
                       color: Colors.grey[700],
@@ -435,9 +437,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                                         const EdgeInsets.only(
                                                       left: 15.0,
                                                       right: 15.0,
-                                                      // top: 15.0,
+                                                      bottom: 15.0,
+                                                       top: 10.0,
                                                     ),
-                                                    child: Text(
+                                                    child: BarcodeWidget(data: '$eagleCardNumber', barcode: Barcode.code39(), height: 65, drawText: false, textPadding: 10,)
+                                                    /*Text(
                                                       '*$eagleCardNumber*',
                                                       style: TextStyle(
                                                         inherit: false,
@@ -447,7 +451,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                         color: Colors.black,
                                                         fontSize: 80,
                                                       ),
-                                                    ),
+                                                    ), */
                                                   ),
                                                 ),
                                               ),
@@ -528,7 +532,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                       ? Colors.white
                                       : Colors.black,
                             )),
-                        SizedBox(height: 100)
+                        SizedBox(height: 100),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                          child: Text("Made by Josh Daneshrad and Eitan Prins-Trachtenberg '22", style: TextStyle(color:
+                                    MediaQuery.of(context).platformBrightness ==
+                                            Brightness.dark
+                                        ? Colors.white
+                                        : Colors.black,),
+                                        textAlign: TextAlign.center,),
+                        )
                       ],
                     ),
                   ),

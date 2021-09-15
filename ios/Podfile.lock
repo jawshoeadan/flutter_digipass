@@ -650,7 +650,7 @@ SPEC CHECKSUMS:
   FirebaseMessaging: ce0a5ee974f7bfe83b6cc5acce88c2d969e37c41
   FirebasePerformance: 5177c87ffbb447f73aa96796e0573c3698238954
   FirebaseRemoteConfig: 34300dd83055c06e2768d0932dd8fb2c1575745f
-  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   google_sign_in: de494e5e993986afae63e22a32441e30c35c9823
   GoogleAppMeasurement: 2c0c6e2a7ab3fe730ade6379f732bdefb46f50b0
   GoogleDataTransport: 85fd18ff3019bb85d3f2c551d04c481dedf71fc9
@@ -667,4 +667,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: afcec358f93eab0742ad2f52bde111b8350ed771
 
-COCOAPODS: 1.11.0
+COCOAPODS: 1.11.1
