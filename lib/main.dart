@@ -540,7 +540,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                           Brightness.dark
                                       ? Colors.white
                                       : Colors.black,
-                            )), onPressed: () {FlutterWebBrowser.openWebPage(url: "https://eaglecash.info");}),
+                            )), onPressed: () {
+                              FlutterWebBrowser.openWebPage(url: "www.eaglecash.info");
+                              }
+                              ),
                         Padding(
                           padding: const EdgeInsets.only(left: 15.0, right: 15.0),
                           child: Text("Made by Josh Daneshrad and Eitan Prins-Trachtenberg '22", style: TextStyle(color:
