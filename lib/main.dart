@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 //import 'package:flutter_digipass/photo_view.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:cached_network_image/cached_network_image.dart';
  import 'package:firebase_analytics/firebase_analytics.dart';
@@ -533,6 +534,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                       : Colors.black,
                             )),
                         SizedBox(height: 100),
+                        CupertinoButton(child: Text("Add Money", style: TextStyle(
+                              color:
+                                  MediaQuery.of(context).platformBrightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Colors.black,
+                            )), onPressed: () {FlutterWebBrowser.openWebPage(url: "https://eaglecash.info");}),
                         Padding(
                           padding: const EdgeInsets.only(left: 15.0, right: 15.0),
                           child: Text("Made by Josh Daneshrad and Eitan Prins-Trachtenberg '22", style: TextStyle(color:

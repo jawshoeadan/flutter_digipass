@@ -19,6 +19,8 @@ jobs:
           rm -f pubspec.lock
           cd ios && rm -f Podfile.lock
           flutter pub get
+          sudo gem install cocoapods
+          pod repo update
           flutter precache --ios && pod install
       - name: Commit bumped build version
         run: |
