@@ -541,7 +541,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       ? Colors.white
                                       : Colors.black,
                             )), onPressed: () {
-                              FlutterWebBrowser.openWebPage(url: "www.eaglecash.info");
+                              FlutterWebBrowser.openWebPage(url: "http://www.eaglecash.info");
                               }
                               ),
                         Padding(
