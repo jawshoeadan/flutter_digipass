@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:cached_network_image/cached_network_image.dart';
- import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -363,7 +363,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                         ),
                         SizedBox(
-                          height: 50,
+                          height: 30,
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -434,15 +434,23 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 child: Container(
                                                   color: Colors.white,
                                                   child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                      left: 15.0,
-                                                      right: 15.0,
-                                                      bottom: 15.0,
-                                                       top: 10.0,
-                                                    ),
-                                                    child: BarcodeWidget(data: '$eagleCardNumber', barcode: Barcode.code39(), height: 65, drawText: false, textPadding: 10,)
-                                                    /*Text(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                        left: 15.0,
+                                                        right: 15.0,
+                                                        bottom: 15.0,
+                                                        top: 10.0,
+                                                      ),
+                                                      child: BarcodeWidget(
+                                                        data:
+                                                            '$eagleCardNumber',
+                                                        barcode:
+                                                            Barcode.code39(),
+                                                        height: 65,
+                                                        drawText: false,
+                                                        textPadding: 10,
+                                                      )
+                                                      /*Text(
                                                       '*$eagleCardNumber*',
                                                       style: TextStyle(
                                                         inherit: false,
@@ -453,7 +461,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                         fontSize: 80,
                                                       ),
                                                     ), */
-                                                  ),
+                                                      ),
                                                 ),
                                               ),
                                             ),
@@ -466,7 +474,20 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 fontSize: 20,
                                               ),
                                             ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
                                             //),
+                                            Text(nameText,
+                                                style: TextStyle(
+                                                    fontFamily: 'SFUI-Medium',
+                                                    fontSize: 20,
+                                                    color: Colors.black)),
+                                            Text(emailText,
+                                                style: TextStyle(
+                                                    fontFamily: 'SFUI-Medium',
+                                                    fontSize: 20,
+                                                    color: Colors.black)),
                                           ],
                                         ),
                                       ),
@@ -481,6 +502,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ),
                         /* Padding(
+                          
                           padding: const EdgeInsets.all(10.0),
                           child: ClipRRect(
                             borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -514,44 +536,52 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                         ), */
+
                         shouldShowSignInButton
                             ? _signInButton()
                             : _signOutButton(),
-                        Text(nameText,
-                            style: TextStyle(
-                              color:
-                                  MediaQuery.of(context).platformBrightness ==
-                                          Brightness.dark
-                                      ? Colors.white
-                                      : Colors.black,
-                            )),
-                        Text(emailText,
-                            style: TextStyle(
-                              color:
-                                  MediaQuery.of(context).platformBrightness ==
-                                          Brightness.dark
-                                      ? Colors.white
-                                      : Colors.black,
-                            )),
-                        SizedBox(height: 100),
-                        CupertinoButton(child: Text("Add Money", style: TextStyle(
-                              color:
-                                  MediaQuery.of(context).platformBrightness ==
-                                          Brightness.dark
-                                      ? Colors.white
-                                      : Colors.black,
-                            )), onPressed: () {
-                              FlutterWebBrowser.openWebPage(url: "http://www.eaglecash.info");
-                              }
+                        CupertinoButton(
+                          onPressed: () {
+                            FlutterWebBrowser.openWebPage(
+                                url: 'http://www.eaglecash.info');
+                          },
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            child: Container(
+                              color: Color.fromRGBO(9, 89, 172, 1.0),
+                              child: Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Text(
+                                  'Add/Check Funds',
+                                  style: TextStyle(
+                                    fontFamily: 'SFUI-Medium',
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                  ),
+                                ),
                               ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                          child: Text("Made by Josh Daneshrad and Eitan Prins-Trachtenberg '22", style: TextStyle(color:
-                                    MediaQuery.of(context).platformBrightness ==
-                                            Brightness.dark
-                                        ? Colors.white
-                                        : Colors.black,),
-                                        textAlign: TextAlign.center,),
+                          padding:
+                              const EdgeInsets.only(left: 15.0, right: 15.0),
+                          child: Text(
+                            "Made by Josh Daneshrad and Eitan Prins-Trachtenberg '22",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: 'SFUI-Medium',
+                              color:
+                                  MediaQuery.of(context).platformBrightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Colors.black,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
                         )
                       ],
                     ),
