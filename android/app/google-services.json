@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "38014690112-stguvsc4ootj4r8osq7dtf9imap7cd9q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.EitanandJosh.DigiPass",
+            "certificate_hash": "7614005d24353d3720caef60b047f989d457e95c"
+          }
+        },
+        {
           "client_id": "38014690112-u3sau4pfp97g0khcek6qf0il93m90r6l.apps.googleusercontent.com",
           "client_type": 3
         }

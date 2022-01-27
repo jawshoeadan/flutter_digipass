@@ -15,6 +15,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'firebase_options.dart';
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -47,7 +48,8 @@ class MyApp extends StatelessWidget {
       [DeviceOrientation.portraitUp],
     );
     return FutureBuilder(
-        future: Firebase.initializeApp(),
+        future: Firebase.initializeApp(
+            options: DefaultFirebaseOptions.currentPlatform),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return CupertinoApp(
@@ -89,11 +91,13 @@ class _MyHomePageState extends State<MyHomePage> {
   void initializeFlutterFire() async {
     try {
       // Wait for Firebase to initialize and set `_initialized` state to true
+      await Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform);
       FirebaseAuth auth = FirebaseAuth.instance;
       FirebaseMessaging messaging = FirebaseMessaging.instance;
       NotificationSettings settings = await messaging.requestPermission();
       FirebasePerformance performance = FirebasePerformance.instance;
-      FirebaseAnalytics analytics = FirebaseAnalytics();
+      FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
       await FirebaseCrashlytics.instance
           .setCrashlyticsCollectionEnabled(!kDebugMode);
@@ -108,6 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     } catch (e) {
       // Set `_error` state to true if Firebase initialization fails
+      print(e);
       setState(() {
         _error = true;
       });
@@ -120,8 +125,11 @@ class _MyHomePageState extends State<MyHomePage> {
         .where("email", isEqualTo: emailText)
         .get()
         .then((QuerySnapshot querySnapshot) {
+      // print(querySnapshot);
       querySnapshot.docs.forEach((doc) {
+        //    print("Document: " + doc.data().toString());
         setState(() {
+          //      print("Eagle Card Number");
           eagleCardNumber = doc["eagleCardNum"];
         });
       });
@@ -131,11 +139,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   initState() {
     initializeFlutterFire();
-    ScreenBrightness.setScreenBrightness(1.0);
+    ScreenBrightness _screenBrightness = ScreenBrightness();
+    _screenBrightness.setScreenBrightness(1.0);
     FirebaseAuth.instance.authStateChanges().listen((firebaseUser) {
       emailText = firebaseUser?.email ?? "";
       nameText = firebaseUser?.displayName ?? "";
       if (firebaseUser?.email != null) {
+        print("Getting Eagle Card Number");
         getEagleCardNumber();
         setState(() {
           shouldShowSignInButton = true;
