@@ -140,7 +140,9 @@ class _MyHomePageState extends State<MyHomePage> {
   initState() {
     initializeFlutterFire();
     ScreenBrightness _screenBrightness = ScreenBrightness();
-    _screenBrightness.setScreenBrightness(1.0);
+    if (!kIsWeb) {
+      _screenBrightness.setScreenBrightness(1.0);
+    }
     FirebaseAuth.instance.authStateChanges().listen((firebaseUser) {
       emailText = firebaseUser?.email ?? "";
       nameText = firebaseUser?.displayName ?? "";
